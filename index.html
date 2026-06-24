@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shepherd Emissions — San Antonio, Texas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080F1C;
+      --bg2:       #0C1525;
+      --glass:     rgba(255,255,255,0.042);
+      --border:    rgba(255,255,255,0.09);
+      --border-hi: rgba(255,255,255,0.18);
+      --red:       #E8112D;
+      --red-dim:   rgba(232,17,45,0.14);
+      --red-glow:  rgba(232,17,45,0.35);
+      --green:     #00C85A;
+      --green-dim: rgba(0,200,90,0.12);
+      --gold:      #C8962A;
+      --white:     #FFFFFF;
+      --dim:       rgba(255,255,255,0.58);
+      --dimmer:    rgba(255,255,255,0.32);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+
+    /* fine dot grid */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.065) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ambient glow top center */
+    body::after {
+      content: ''; position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 500px; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse, rgba(232,17,45,0.06) 0%, transparent 70%);
+    }
+
+    /* ── DIRECTIONS BAR ── */
+    .dir-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 201;
+      height: 34px; display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      background: var(--red); padding: 0 1.5rem;
+    }
+    .dir-bar a {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; text-decoration: none; white-space: nowrap;
+    }
+    .dir-bar a:hover { opacity: 0.85; }
+    .dir-addr { font-size: 0.68rem; color: rgba(255,255,255,0.8); letter-spacing: 0.04em; white-space: nowrap; text-decoration: none; }
+    .dir-addr:hover { color: #fff; }
+    .dir-sep { color: rgba(255,255,255,0.35); font-size: 0.7rem; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 34px; left: 0; right: 0; z-index: 200;
+      height: 80px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(8,15,28,0.96); backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      gap: 1.5rem;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
+    .nav-logo-sm { width: 44px; height: 44px; flex-shrink: 0; }
+    .nav-logo-sm img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-wordmark { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+    .nav-right { display: flex; align-items: center; gap: 1.25rem; flex: 1; justify-content: flex-end; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dimmer); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--white); }
+
+    /* nav info box: hours + insurance warning + address */
+    .nav-info {
+      display: flex; align-items: stretch; gap: 0; border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; flex-shrink: 0;
+    }
+    .nav-info-block {
+      padding: 0.45rem 0.9rem; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; justify-content: center; gap: 0.15rem;
+    }
+    .nav-info-block:last-child { border-right: none; }
+    .nav-info-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dimmer); }
+    .nav-info-val { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--white); white-space: nowrap; }
+    .nav-info-val.small { font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem; font-weight: 500; }
+
+    /* flashing insurance warning */
+    .nav-insurance {
+      padding: 0.45rem 1rem; background: rgba(232,17,45,0.1);
+      display: flex; flex-direction: column; justify-content: center; gap: 0.15rem;
+      border-right: none;
+    }
+    .nav-ins-label { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); }
+    .nav-ins-val {
+      font-size: 0.7rem; font-weight: 700; color: var(--white); white-space: nowrap;
+      animation: insflash 1.4s ease-in-out infinite;
+    }
+    @keyframes insflash {
+      0%, 100% { opacity: 1; color: #fff; }
+      50% { opacity: 0.4; color: var(--red); }
+    }
+
+    .nav-tel {
+      font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--red);
+      text-decoration: none; border: 1px solid rgba(232,17,45,0.3); border-radius: 3px;
+      padding: 0.4rem 0.85rem; letter-spacing: 0.04em; flex-shrink: 0;
+      transition: all 0.2s; position: relative;
+    }
+    .nav-tel:hover { background: var(--red-dim); box-shadow: 0 0 16px var(--red-glow); }
+    .nav-tel::after { content: ''; transition: content 0.2s; }
+    .nav-tel:hover::after { content: ' 🐕'; font-size: 0.65rem; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 11rem 2.5rem 5rem; text-align: center;
+    }
+    .hero-logo-ring {
+      position: relative; margin-bottom: 3rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* spinning outer ring */
+    .hero-logo-ring::before {
+      content: ''; position: absolute;
+      width: 256px; height: 256px; border-radius: 50%;
+      border: 1px solid transparent;
+      border-top-color: rgba(232,17,45,0.5);
+      border-right-color: rgba(232,17,45,0.15);
+      animation: spin 8s linear infinite;
+    }
+    .hero-logo-ring::after {
+      content: ''; position: absolute;
+      width: 270px; height: 270px; border-radius: 50%;
+      border: 1px solid transparent;
+      border-bottom-color: rgba(0,200,90,0.3);
+      border-left-color: rgba(0,200,90,0.08);
+      animation: spin 12s linear reverse infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hero-logo-circle {
+      width: 260px; height: 260px;
+      filter: drop-shadow(0 0 40px rgba(232,17,45,0.45)) drop-shadow(0 0 80px rgba(232,17,45,0.18));
+      position: relative; z-index: 1;
+    }
+    .hero-logo-circle img { width: 100%; height: 100%; object-fit: contain; display: block; clip-path: circle(49%); }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid rgba(0,200,90,0.25); border-radius: 20px;
+      padding: 0.28rem 0.85rem; margin-bottom: 1.25rem;
+      background: rgba(0,200,90,0.05);
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+    .badge-text { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); }
+    h1 { font-size: clamp(2.6rem, 5.5vw, 4.5rem); font-weight: 700; line-height: 1.03; letter-spacing: -0.025em; margin-bottom: 1.1rem; }
+    h1 .red { color: var(--red); }
+    .hero-sub { font-size: 0.95rem; font-weight: 300; line-height: 1.85; color: var(--dim); max-width: 440px; margin: 0 auto 0.5rem; }
+    .hero-footnote { font-size: 0.62rem; color: var(--dimmer); max-width: 440px; margin: 0 auto 2.25rem; line-height: 1.5; }
+    .hero-actions { display: flex; gap: 0.85rem; justify-content: center; }
+    .btn-primary {
+      display: inline-block; background: var(--red); color: var(--white);
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      text-decoration: none; padding: 0.8rem 1.75rem; border-radius: 3px;
+      box-shadow: 0 0 24px rgba(232,17,45,0.35); transition: all 0.2s;
+    }
+    .btn-primary:hover { box-shadow: 0 0 40px rgba(232,17,45,0.55); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-block; color: var(--dim);
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; padding: 0.8rem 1.75rem; border-radius: 3px;
+      border: 1px solid var(--border-hi); transition: all 0.2s;
+    }
+    .btn-secondary:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+
+    /* law strip */
+    .law-strip {
+      margin-top: 3rem; max-width: 680px; width: 100%;
+      background: var(--glass); border: 1px solid var(--border);
+      border-left: 2px solid var(--red); border-radius: 4px;
+      padding: 1.1rem 1.5rem; text-align: left; position: relative;
+    }
+    .law-strip-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(232,17,45,0.7); margin-bottom: 0.4rem; display: block; }
+    .law-strip p { font-size: 0.82rem; line-height: 1.7; color: var(--dim); }
+    .law-strip p strong { color: var(--white); font-weight: 500; }
+    .law-cite { font-family: 'Space Mono', monospace; font-size: 0.58rem; color: var(--dimmer); margin-top: 0.4rem; display: block; }
+    /* easter egg in law strip */
+    .law-egg { position: absolute; bottom: 0.5rem; right: 0.75rem; font-size: 0.7rem; opacity: 0.04; transition: opacity 0.3s, transform 0.3s; cursor: default; }
+    .law-egg:hover { opacity: 1; transform: scale(1.5); }
+
+    /* ── COMPETITOR ROAST ── */
+    .roast-strip {
+      position: relative; z-index: 1; padding: 4rem 2.5rem;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(232,17,45,0.03) 0%, transparent 60%);
+    }
+    .roast-inner {
+      max-width: 860px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center;
+    }
+    .roast-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .roast-them .roast-label { color: var(--dimmer); }
+    .roast-us .roast-label { color: var(--green); }
+    .roast-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .roast-col ul li { font-size: 0.82rem; color: var(--dim); display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+    .roast-price { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--red); white-space: nowrap; }
+    .roast-us-price { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--green); white-space: nowrap; }
+    .roast-them { background: rgba(232,17,45,0.06); border: 1px solid rgba(232,17,45,0.3); border-radius: 6px; padding: 1.5rem; }
+    .roast-us { background: rgba(0,200,90,0.04); border: 1px solid rgba(0,200,90,0.18); border-radius: 6px; padding: 1.5rem; }
+    .roast-divider {
+      font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700;
+      color: var(--dimmer); letter-spacing: 0.1em;
+      width: 36px; text-align: center; flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .roast-inner { grid-template-columns: 1fr; gap: 0.75rem; }
+      .roast-divider { text-align: left; padding-left: 1.5rem; }
+      .roast-strip { padding: 3rem 1.25rem; }
+    }
+
+    /* ── STATS ── */
+    .stats { position: relative; z-index: 1; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
+    .stat { padding: 1.75rem 0; text-align: center; border-right: 1px solid var(--border); position: relative; }
+    .stat:last-child { border-right: none; }
+    .stat-n { font-family: 'Space Mono', monospace; font-size: 1.5rem; font-weight: 700; color: var(--red); line-height: 1; margin-bottom: 0.3rem; text-shadow: 0 0 20px rgba(232,17,45,0.4); }
+    .stat-l { font-size: 0.68rem; color: var(--dimmer); letter-spacing: 0.06em; }
+
+    /* ── INSURANCE ── */
+    .insurance { position: relative; z-index: 1; padding: 6rem 2.5rem; border-bottom: 1px solid var(--border); }
+    .ins-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .sec-eyebrow { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--green); display: block; margin-bottom: 0.85rem; }
+    .sec-h { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem; }
+    .ins-body { font-size: 0.875rem; line-height: 1.85; color: var(--dim); margin-bottom: 1.25rem; }
+    .ins-body strong { color: var(--white); font-weight: 500; }
+    .ins-alert {
+      font-size: 0.8rem; color: var(--green); line-height: 1.65;
+      border: 1px solid rgba(0,200,90,0.2); border-radius: 4px;
+      padding: 0.85rem 1rem; background: var(--green-dim); position: relative;
+    }
+    /* easter egg inside alert */
+    .ins-alert-egg { position: absolute; right: 0.6rem; bottom: 0.3rem; font-size: 0.65rem; opacity: 0.05; transition: all 0.3s; cursor: default; }
+    .ins-alert-egg:hover { opacity: 1; transform: scale(1.6) rotate(-10deg); }
+    .ins-cards { display: flex; flex-direction: column; gap: 0.6rem; }
+    .ins-card {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 5px;
+      padding: 0.9rem 1.1rem; display: flex; align-items: center; gap: 0.85rem;
+      transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .ins-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--green); opacity: 0; transition: opacity 0.2s; }
+    .ins-card:hover::before { opacity: 1; }
+    .ins-card:hover { border-color: rgba(0,200,90,0.2); background: var(--green-dim); }
+    .ins-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .ins-card-t { font-size: 0.85rem; font-weight: 500; color: var(--white); }
+    .ins-card-s { font-size: 0.72rem; color: var(--dimmer); margin-top: 0.1rem; }
+
+    /* ── SERVICES ── */
+    .services { position: relative; z-index: 1; padding: 6rem 2.5rem; border-bottom: 1px solid var(--border); }
+    .svc-inner { max-width: 900px; margin: 0 auto; }
+    .svc-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-top: 2.5rem; }
+    .svc {
+      background: var(--bg); padding: 2.25rem 2rem; position: relative; overflow: hidden;
+      transition: background 0.2s;
+    }
+    .svc::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, var(--red), transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+    .svc:hover::after { transform: scaleX(1); }
+    .svc:hover { background: var(--glass); }
+    .svc-n { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; color: var(--white); margin-bottom: 0.6rem; }
+    .svc-d { font-size: 0.82rem; line-height: 1.8; color: var(--dim); }
+    /* easter egg in first service card */
+    .svc-egg { position: absolute; bottom: 0.75rem; right: 0.75rem; font-size: 0.7rem; opacity: 0.04; transition: all 0.3s; cursor: default; }
+    .svc-egg:hover { opacity: 1; transform: scale(1.5); }
+
+    /* ── SCAN CARD ── */
+    .scan-wrap { max-width: 900px; margin: 0 auto; padding: 0 2.5rem 6rem; position: relative; z-index: 1; }
+    .scan-card {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 8px;
+      padding: 2rem; position: relative; overflow: hidden;
+    }
+    .scan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--red), var(--green), transparent); }
+    .scan-lbl { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dimmer); margin-bottom: 1.25rem; }
+    .scan-bar-wrap { background: rgba(255,255,255,0.05); border-radius: 2px; height: 2px; overflow: hidden; margin-bottom: 0.4rem; }
+    .scan-bar { height: 100%; background: linear-gradient(to right, var(--red), var(--green)); width: 0; animation: fill 2.4s ease-out 0.6s forwards; }
+    @keyframes fill { to { width: 100%; } }
+    .scan-status { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--dimmer); margin-bottom: 1.5rem; animation: fin 0.3s 3.2s both; }
+    @keyframes fin { from { opacity: 0; } to { opacity: 1; } }
+    .scan-result { font-size: 2.8rem; font-weight: 700; letter-spacing: -0.01em; color: var(--green); text-shadow: 0 0 30px rgba(0,200,90,0.5); animation: pop 0.5s cubic-bezier(.175,.885,.32,1.275) 3.3s both; }
+    @keyframes pop { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+    .scan-meta { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .scan-fl { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dimmer); margin-bottom: 0.2rem; }
+    .scan-fv { font-family: 'Space Mono', monospace; font-size: 0.82rem; color: var(--white); }
+    /* easter egg in scan card */
+    .scan-egg { position: absolute; top: 0.75rem; right: 0.9rem; font-size: 0.65rem; opacity: 0.04; transition: all 0.3s; cursor: default; }
+    .scan-egg:hover { opacity: 1; transform: scale(1.5) rotate(5deg); }
+
+    /* ── HOW ── */
+    .how { position: relative; z-index: 1; padding: 6rem 2.5rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .how-inner { max-width: 900px; margin: 0 auto; }
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 3rem; margin-top: 2.5rem; }
+    .step { padding-top: 1.25rem; border-top: 1px solid var(--border); position: relative; }
+    .step-num { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; color: var(--red); display: block; margin-bottom: 0.75rem; }
+    .step-t { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+    .step-d { font-size: 0.82rem; line-height: 1.8; color: var(--dim); }
+    /* easter egg step 2 */
+    .step-egg { position: absolute; bottom: 0; right: 0; font-size: 0.65rem; opacity: 0.04; transition: all 0.3s; cursor: default; }
+    .step-egg:hover { opacity: 1; transform: scale(1.5); }
+
+    /* ── INFO ── */
+    .info { position: relative; z-index: 1; padding: 6rem 2.5rem; }
+    .info-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; }
+    .info-block-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dimmer); display: block; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .hr { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .hr:last-of-type { border-bottom: none; }
+    .hr-d { color: var(--dimmer); font-weight: 300; }
+    .hr-t { color: var(--white); font-weight: 400; }
+    .hr-c { color: rgba(255,255,255,0.15); }
+    .info-tel { display: block; margin-top: 1.5rem; font-family: 'Space Mono', monospace; font-size: 1.2rem; color: var(--white); text-decoration: none; transition: color 0.2s; letter-spacing: -0.01em; }
+    .info-tel:hover { color: var(--red); }
+    .coming { display: inline-block; font-size: 0.58rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); border: 1px solid rgba(0,200,90,0.25); border-radius: 2px; padding: 0.2rem 0.6rem; margin-bottom: 0.85rem; }
+    .loc-p { font-size: 0.84rem; line-height: 1.9; color: var(--dim); }
+    .loc-p strong { color: var(--white); font-weight: 500; display: block; }
+    .bring-list { list-style: none; }
+    .bring-list li { font-size: 0.82rem; line-height: 1.65; color: var(--dim); padding: 0.5rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 0.65rem; }
+    .bring-list li:last-child { border-bottom: none; }
+    .bring-list li.must { background: rgba(232,17,45,0.06); border: 1px solid rgba(232,17,45,0.18); border-radius: 4px; padding: 0.7rem 0.8rem; margin-bottom: 0.5rem; color: rgba(255,255,255,0.75); }
+    .bring-list li.must .bk { color: var(--red); }
+    .bk { color: var(--green); flex-shrink: 0; margin-top: 1px; }
+
+    /* ── REVIEWS ── */
+    .reviews-section { position: relative; z-index: 1; padding: 6rem 0 6rem; border-top: 1px solid var(--border); }
+    .reviews-inner { max-width: 900px; margin: 0 auto; padding: 0 2.5rem; }
+    .reviews-carousel-wrap { position: relative; margin-top: 2.5rem; margin-bottom: 1.5rem; }
+    .reviews-grid {
+      display: flex; gap: 1.1rem;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding: 0.25rem 2.5rem 1rem;
+      cursor: grab;
+    }
+    .reviews-grid::-webkit-scrollbar { display: none; }
+    .reviews-grid:active { cursor: grabbing; }
+    .review-card {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 6px;
+      padding: 1.4rem 1.3rem; display: flex; flex-direction: column; gap: 0.75rem;
+      transition: border-color 0.2s, background 0.2s;
+      scroll-snap-align: start; flex: 0 0 320px; min-width: 320px;
+    }
+    .review-card:hover { border-color: rgba(232,17,45,0.2); background: rgba(255,255,255,0.05); }
+    .review-stars { color: #F5A623; font-size: 0.85rem; letter-spacing: 0.05em; }
+    .review-text { font-size: 0.82rem; line-height: 1.8; color: var(--dim); flex: 1; }
+    .review-author { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .review-name { font-size: 0.78rem; font-weight: 600; color: var(--white); }
+    .review-source { font-size: 0.62rem; color: var(--dimmer); letter-spacing: 0.06em; border: 1px solid var(--border); border-radius: 2px; padding: 0.15rem 0.45rem; }
+    /* carousel dots */
+    .reviews-dots { display: flex; justify-content: center; gap: 0.45rem; margin-bottom: 1.5rem; }
+    .reviews-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-hi); transition: background 0.2s, transform 0.2s; cursor: pointer; }
+    .reviews-dot.active { background: var(--red); transform: scale(1.3); }
+    .reviews-summary { display: flex; align-items: center; gap: 1.25rem; padding: 1.25rem 1.5rem; background: var(--glass); border: 1px solid var(--border); border-radius: 6px; }
+    .reviews-score { font-family: 'Space Mono', monospace; font-size: 2.8rem; font-weight: 700; color: var(--white); line-height: 1; }
+    .reviews-stars-big { color: #F5A623; font-size: 1rem; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+    .reviews-count { font-size: 0.72rem; color: var(--dimmer); }
+
+    /* ── FAIL SECTION ── */
+    .fail-section { position: relative; z-index: 1; padding: 6rem 2.5rem; border-top: 1px solid var(--border); }
+    .fail-inner { max-width: 900px; margin: 0 auto; }
+    .fail-intro { font-size: 0.88rem; color: var(--dim); line-height: 1.8; margin-bottom: 2.5rem; max-width: 600px; }
+    .fail-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    .fail-card {
+      background: var(--glass); border: 1px solid var(--border); border-radius: 6px;
+      padding: 1.6rem 1.4rem; position: relative; overflow: hidden; transition: border-color 0.2s;
+    }
+    .fail-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, var(--red), transparent); opacity: 0; transition: opacity 0.2s; }
+    .fail-card:hover::before { opacity: 1; }
+    .fail-card:hover { border-color: rgba(232,17,45,0.2); }
+    .fail-icon { font-size: 1.4rem; margin-bottom: 0.85rem; }
+    .fail-card-t { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.6rem; }
+    .fail-card-d { font-size: 0.8rem; line-height: 1.8; color: var(--dim); }
+    .fail-flash { color: var(--red); animation: failblink 0.9s ease-in-out infinite; }
+    @keyframes failblink { 0%,100%{ opacity:1; text-shadow: 0 0 18px rgba(232,17,45,0.7); } 50%{ opacity:0.25; text-shadow: none; } }
+    .reinspect-banner {
+      background: rgba(232,17,45,0.06); border: 1px solid rgba(232,17,45,0.2);
+      border-radius: 6px; padding: 1.4rem 1.6rem;
+      display: flex; align-items: flex-start; gap: 1.1rem;
+    }
+    .reinspect-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .reinspect-t { font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 0.35rem; }
+    .reinspect-d { font-size: 0.82rem; line-height: 1.75; color: var(--dim); }
+    .reinspect-d strong { color: var(--white); font-weight: 600; }
+
+    /* ── BOTTOM BAR ── */
+    .bottom-bar { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 1rem 2.5rem; display: flex; justify-content: center; align-items: center; gap: 1.75rem; flex-wrap: wrap; }
+    .bb { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dimmer); }
+    .bb-sep { color: rgba(255,255,255,0.08); }
+
+    /* ── FOOTER ── */
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 1.5rem 2.5rem; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+    .f-logo { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; }
+    .f-logo img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .f-copy { font-size: 0.68rem; color: var(--dimmer); }
+    .f-links { display: flex; gap: 1.5rem; }
+    .f-links a { font-size: 0.68rem; color: var(--dimmer); text-decoration: none; transition: color 0.2s; }
+    .f-links a:hover { color: var(--white); }
+
+    /* ── EASTER EGGS ── */
+    /* dog running across bottom */
+    .egg-runner {
+      position: fixed; bottom: 14px; left: -40px; z-index: 999;
+      font-size: 1rem; opacity: 0; pointer-events: none;
+      animation: rundog 22s linear 5s infinite;
+      filter: drop-shadow(0 0 4px rgba(232,17,45,0.5));
+      transform: scaleX(-1);
+    }
+    @keyframes rundog {
+      0%   { left: -40px; opacity: 0; }
+      4%   { opacity: 0.7; }
+      96%  { opacity: 0.7; }
+      100% { left: calc(100vw + 40px); opacity: 0; }
+    }
+    /* boston terrier occasionally peeks from bottom right */
+    .egg-peek {
+      position: fixed; bottom: -26px; right: 60px; z-index: 999;
+      font-size: 1.1rem; pointer-events: none;
+      animation: peek 30s ease-in-out 12s infinite;
+      filter: drop-shadow(0 0 4px rgba(0,200,90,0.4));
+    }
+    @keyframes peek {
+      0%,85%,100% { bottom: -26px; }
+      88%,97%     { bottom: 10px; }
+    }
+    /* konami code secret */
+    .konami-reveal {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(3,8,15,0.96); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.5s;
+    }
+    .konami-reveal.active { opacity: 1; pointer-events: all; }
+    .konami-dogs { font-size: 3rem; letter-spacing: 0.5rem; margin-bottom: 1rem; }
+    .konami-text { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--green); letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+    .konami-sub { font-size: 0.7rem; color: var(--dimmer); }
+    .konami-close { margin-top: 2rem; font-size: 0.65rem; color: var(--dimmer); cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid var(--border); padding: 0.4rem 1rem; border-radius: 2px; }
+    .konami-close:hover { color: var(--white); }
+
+    /* generic egg helper */
+    .egg { opacity: 0.04; transition: all 0.3s; cursor: default; display: inline-block; }
+    .egg:hover { opacity: 1; transform: scale(1.4); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .dir-addr { display: none; }
+      .dir-sep { display: none; }
+      nav { padding: 0; height: auto; flex-direction: column; align-items: stretch; gap: 0; }
+      .nav-brand { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 1rem; }
+      .nav-tel { margin-left: 0; font-size: 0.68rem; padding: 0.3rem 0.6rem; }
+      .nav-right { width: 100%; flex-direction: row; align-items: stretch; gap: 0; padding-bottom: 0; }
+      .nav-links { display: none; }
+      .nav-info { width: 100%; border-radius: 0; border-top: 1px solid var(--border); border-left: none; border-right: none; border-bottom: none; flex: 1; }
+      .nav-info-block { padding: 0.35rem 0.6rem; flex: 1; }
+      .nav-info-val { font-size: 0.62rem; }
+      .nav-info-val.small { font-size: 0.6rem; }
+      .nav-ins-val { font-size: 0.62rem; }
+      .nav-wordmark { font-size: 0.7rem; }
+      .nav-logo-sm { width: 32px; height: 32px; }
+      .hero { padding: 11rem 1.25rem 3.5rem; justify-content: flex-start; }
+      .ins-inner, .info-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .stat { border-bottom: 1px solid var(--border); padding: 1.4rem 0; }
+      .stat:nth-child(odd) { border-right: 1px solid var(--border); }
+      .stat:nth-child(even) { border-right: none; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 2rem; }
+      .scan-meta { grid-template-columns: 1fr 1fr; }
+      .insurance, .services, .how, .info, .fail-section { padding: 3.5rem 1.25rem; }
+      .scan-wrap { padding: 0 1.25rem 3.5rem; }
+      footer { padding: 1.25rem; }
+      .bottom-bar { padding: 0.85rem 1.25rem; gap: 0.65rem; }
+      .fail-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .reviews-section { padding: 3.5rem 0; }
+      .reviews-inner { padding: 0 1.25rem; }
+      .reviews-grid { padding: 0.25rem 1.25rem 1rem; }
+      .review-card { flex: 0 0 85vw; min-width: 0; }
+      .reinspect-banner { flex-direction: column; gap: 0.75rem; }
+      .hero-logo-circle { width: 220px; height: 220px; }
+      .hero-logo-ring::before { width: 216px; height: 216px; }
+      .hero-logo-ring::after { width: 230px; height: 230px; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 1rem; }
+      .nav-wordmark { display: none; }
+      .nav-tel { font-size: 0.72rem; padding: 0.45rem 0.75rem; }
+      .hero { padding: 12rem 1rem 3rem; justify-content: flex-start; }
+      h1 { font-size: 2.2rem; }
+      .hero-sub { font-size: 0.9rem; }
+      .btn-primary, .btn-secondary { padding: 0.9rem 1.4rem; font-size: 0.78rem; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; }
+      .hero-actions { flex-direction: column; align-items: center; width: 100%; gap: 0.65rem; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 280px; }
+      .law-strip { padding: 1rem 1.1rem; }
+      .stat-n { font-size: 1.2rem; }
+      .ins-inner { gap: 2rem; }
+      .sec-h { font-size: 1.5rem; }
+      .scan-meta { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .scan-result { font-size: 2.2rem; }
+      .info-tel { font-size: 1rem; }
+      .insurance, .services, .how, .info, .fail-section { padding: 3rem 1rem; }
+      .scan-wrap { padding: 0 1rem 3rem; }
+      .fail-grid { gap: 0.85rem; }
+      .fail-card { padding: 1.25rem 1.1rem; }
+      footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.25rem 1rem; }
+      .bottom-bar { padding: 0.75rem 1rem; }
+      .bb { font-size: 0.55rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .egg-runner, .egg-peek, .hero-logo-ring::before, .hero-logo-ring::after { animation: none; }
+      .scan-bar { width: 100%; }
+      .scan-status { opacity: 1; }
+      .scan-result { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- EASTER EGG: GSD runs across screen every 22s -->
+<div class="egg-runner" title="good boy 🐕">🐕‍🦺</div>
+<!-- EASTER EGG: Boston terrier peeks up from bottom right every 30s -->
+<div class="egg-peek" title="peek-a-boo 🐶">🐶</div>
+
+<!-- KONAMI CODE EASTER EGG OVERLAY -->
+<div class="konami-reveal" id="konami">
+  <div class="konami-dogs">🐕‍🦺 🐶 🐕‍🦺 🐶 🐕‍🦺</div>
+  <p class="konami-text">// you found the secret pack //</p>
+  <p class="konami-sub">Shepherd Emissions — est. San Antonio, TX<br>good dogs, great inspections</p>
+  <div class="konami-close" onclick="document.getElementById('konami').classList.remove('active')">close ✕</div>
+</div>
+
+<!-- DIRECTIONS BAR -->
+<div class="dir-bar">
+  <a class="dir-addr" href="https://www.google.com/maps/search/?api=1&query=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener">108 Hawthorne St, San Antonio, TX 78214</a>
+  <span class="dir-sep">·</span>
+  <a href="https://www.google.com/maps/dir/?api=1&destination=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener">
+    ↗ Get Directions
+  </a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo-sm"><img src="logo.png?v=2" alt="Shepherd Emissions" /></div>
+    <span class="nav-wordmark">Shepherd Emissions</span>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#insurance">Insurance</a></li>
+      <li><a href="#services">Services</a></li>
+    </ul>
+    <div class="nav-info">
+      <div class="nav-info-block">
+        <span class="nav-info-label">Hours</span>
+        <span class="nav-info-val">Mon–Fri 8–5:30</span>
+        <span class="nav-info-val">Sat 8–4</span>
+      </div>
+      <a class="nav-info-block" href="https://www.google.com/maps/search/?api=1&query=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" style="text-decoration:none;">
+        <span class="nav-info-label">Address</span>
+        <span class="nav-info-val small">108 Hawthorne St</span>
+        <span class="nav-info-val small">San Antonio, TX</span>
+      </a>
+      <div class="nav-info-block nav-insurance">
+        <span class="nav-ins-label">⚠ Required</span>
+        <span class="nav-ins-val">Bring Insurance!</span>
+      </div>
+    </div>
+    <a href="tel:+12105550182" class="nav-tel">(210) 555-0182</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-logo-ring">
+    <div class="hero-logo-circle">
+      <img src="logo.png?v=2" alt="Shepherd Emissions" />
+    </div>
+  </div>
+  <div class="hero-badge"><div class="badge-dot"></div><span class="badge-text">Now Open · 108 Hawthorne St, San Antonio</span></div>
+  <h1>San Antonio's Most Efficient,<br><span class="red">No Upcharge</span> Station.</h1>
+  <p class="hero-sub">Walk in. Get cleared. Drive away. No appointments, no wait rooms, no nonsense — just the fastest emissions inspection in the city. Done in under 5 minutes.*</p>
+  <p class="hero-footnote">* Average inspection time when no queue is present and equipment is functioning normally.</p>
+  <div class="hero-actions">
+    <a href="#info" class="btn-primary">Get Directions</a>
+    <a href="#services" class="btn-secondary">View Services</a>
+  </div>
+  <div class="law-strip">
+    <span class="law-strip-label">Texas Law — Required Annually</span>
+    <p><strong>Bexar County requires an annual emissions inspection</strong> for all registered vehicles before registration renewal. Under Texas Transportation Code § 548.301, failing to pass means your registration cannot be renewed with TxDMV.</p>
+    <span class="law-cite">Tex. Transp. Code § 548.301 · Tex. Health &amp; Safety Code § 382</span>
+    <!-- EASTER EGG: GSD hiding in legalese -->
+    <span class="law-egg" title="even the law can't stop a good dog 🐕">🐕‍🦺</span>
+  </div>
+</section>
+
+<!-- COMPETITOR DIG -->
+<div class="roast-strip">
+  <div class="roast-inner">
+    <div class="roast-col roast-them">
+      <p class="roast-label">Somewhere else in San Antonio</p>
+      <ul>
+        <li>🚗 Inspection — <span class="roast-price">$18.50</span></li>
+        <li>🔧 "Recommended" air filter — <span class="roast-price">+$49</span></li>
+        <li>💧 Wiper fluid top-off — <span class="roast-price">+$15</span></li>
+        <li>🕰 "Quick" check — <span class="roast-price">45 min wait</span></li>
+        <li>😬 Upsell #4 while you wait — <span class="roast-price">+$???</span></li>
+      </ul>
+    </div>
+    <div class="roast-divider">VS</div>
+    <div class="roast-col roast-us">
+      <p class="roast-label">Shepherd Emissions</p>
+      <ul>
+        <li>✅ Emissions inspection — <span class="roast-us-price">$18.50</span></li>
+        <li>✅ State-mandated fee, nothing more — <span class="roast-us-price">$0 added</span></li>
+        <li>✅ In and out — <span class="roast-us-price">~5 min</span></li>
+        <li>✅ No upsells. Ever. — <span class="roast-us-price">Guaranteed</span></li>
+        <li>✅ Same price every time — <span class="roast-us-price">$18.50 flat</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat"><p class="stat-n">Walk-In</p><p class="stat-l">Zero appointments. Ever.</p></div>
+    <div class="stat"><p class="stat-n">~5 min</p><p class="stat-l">Fastest in San Antonio</p></div>
+    <div class="stat"><p class="stat-n">Mon–Sat</p><p class="stat-l">Six days a week</p></div>
+    <div class="stat" style="position:relative;">
+      <p class="stat-n">Bexar Co.</p><p class="stat-l">Serving all San Antonio</p>
+      <!-- EASTER EGG: tiny boston hiding in stats -->
+      <span class="egg" style="position:absolute;bottom:0.5rem;right:0.75rem;font-size:0.65rem;" title="bexar county's finest 🐶">🐶</span>
+    </div>
+  </div>
+</div>
+
+<!-- INSURANCE -->
+<section class="insurance" id="insurance">
+  <div class="ins-inner">
+    <div>
+      <span class="sec-eyebrow">⚠ Required to Pass</span>
+      <h2 class="sec-h">Bring Your<br>Insurance Card.</h2>
+      <p class="ins-body">Texas law requires valid liability insurance to complete your inspection. <strong>It's the #1 reason customers have to leave and come back.</strong> Have it ready before you pull in — digital is perfectly fine.</p>
+      <div class="ins-alert">
+        ✓ &nbsp;A phone photo, screenshot, or insurance app is all we need. No printed card required.
+        <span class="ins-alert-egg" title="insured and adorable 🐶">🐶</span>
+      </div>
+    </div>
+    <div class="ins-cards">
+      <div class="ins-card"><span class="ins-icon">📱</span><div><p class="ins-card-t">Phone Photo</p><p class="ins-card-s">Screenshot of your card</p></div></div>
+      <div class="ins-card"><span class="ins-icon">📲</span><div><p class="ins-card-t">Insurance App</p><p class="ins-card-s">Progressive, GEICO, State Farm, etc.</p></div></div>
+      <div class="ins-card"><span class="ins-icon">📄</span><div><p class="ins-card-t">Printed Card</p><p class="ins-card-s">Traditional paper card accepted</p></div></div>
+      <div class="ins-card" style="position:relative;"><span class="ins-icon">📧</span><div><p class="ins-card-t">Email / PDF</p><p class="ins-card-s">Digital document on your phone</p></div>
+        <!-- EASTER EGG: GSD in last insurance card -->
+        <span class="egg" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);font-size:0.7rem;" title="🐕‍🦺 certified">🐕‍🦺</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="svc-inner">
+    <span class="sec-eyebrow">What We Do</span>
+    <h2 class="sec-h">Emissions Inspection</h2>
+    <div class="svc-grid">
+      <div class="svc">
+        <span class="svc-egg" title="fast like a GSD 🐕‍🦺">🐕‍🦺</span>
+        <p class="svc-n">OBD-II Emissions Test</p>
+        <p class="svc-d">We connect to your vehicle's diagnostic port and run the full state-required emissions scan. Results printed on the spot and filed electronically with TxDMV. In and out in 5 minutes.</p>
+      </div>
+      <div class="svc" style="position:relative;">
+        <span class="svc-egg" title="boston approved 🐶">🐶</span>
+        <p class="svc-n">Out-of-State Transfer</p>
+        <p class="svc-d">Getting a Texas title or switching to Texas plates? An emissions test is required. All you need to bring is proof of insurance that meets Texas minimum liability requirements.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCAN CARD -->
+<div class="scan-wrap">
+  <div class="scan-card">
+    <span class="scan-egg" title="scan complete. good boy detected 🐕">🐕‍🦺</span>
+    <p class="scan-lbl">// OBD-II Diagnostic System · Shepherd Emissions</p>
+    <div class="scan-bar-wrap"><div class="scan-bar"></div></div>
+    <p class="scan-status">All emissions monitors verified...</p>
+    <div class="scan-result">PASS ✓</div>
+    <div class="scan-meta">
+      <div><p class="scan-fl">County</p><p class="scan-fv">Bexar, TX</p></div>
+      <div><p class="scan-fl">Valid</p><p class="scan-fv">12 months</p></div>
+      <div><p class="scan-fl">Station</p><p class="scan-fv">Shepherd</p></div>
+      <div><p class="scan-fl">Time</p><p class="scan-fv">~5 min</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- IF YOU DON'T PASS -->
+<section class="fail-section">
+  <div class="fail-inner">
+    <span class="sec-eyebrow">If Your Vehicle Doesn't Pass</span>
+    <h2 class="sec-h">What Happens If You <span class="fail-flash">FAIL</span></h2>
+    <p class="fail-intro">Most vehicles pass on the first try. But if yours doesn't, here's exactly what it means — and what to do next.</p>
+    <div class="fail-grid">
+      <div class="fail-card">
+        <div class="fail-icon">🔧</div>
+        <p class="fail-card-t">Diagnostic Code (DTC)</p>
+        <p class="fail-card-d">Your vehicle's computer flagged an emissions-related fault. This needs to be diagnosed and repaired by a mechanic before you can pass. Once fixed, come back for your free reinspection.</p>
+      </div>
+      <div class="fail-card">
+        <div class="fail-icon">⏳</div>
+        <p class="fail-card-t">Monitors Not Ready</p>
+        <p class="fail-card-d">Your vehicle's onboard systems haven't completed their self-checks — usually happens after a battery disconnect or recent repair. Drive the vehicle for a few days through normal stop-and-go cycles, then return.</p>
+      </div>
+      <div class="fail-card">
+        <div class="fail-icon">⛽</div>
+        <p class="fail-card-t">Gas Cap Test Failed</p>
+        <p class="fail-card-d">A loose or faulty gas cap causes evaporative emissions to leak. Pick up a new gas cap at any auto parts store and come back — it's one of the quickest fixes.</p>
+      </div>
+    </div>
+    <div class="reinspect-banner">
+      <span class="reinspect-icon">📋</span>
+      <div>
+        <p class="reinspect-t">You pay once. Reinspection is free.</p>
+        <p class="reinspect-d">You're charged for the inspection when it's performed. If your vehicle fails, you have <strong>15 days</strong> to make the necessary repairs and return for a free reinspection — no additional charge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="how-inner">
+    <span class="sec-eyebrow">Process</span>
+    <h2 class="sec-h">How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">// 01</span>
+        <p class="step-t">Pull In</p>
+        <p class="step-d">Drive up any time we're open. No call ahead, no booking. First come, first served — always. All you need is your insurance.</p>
+      </div>
+      <div class="step" style="position:relative;">
+        <!-- EASTER EGG: GSD hiding between steps -->
+        <span class="step-egg" title="step 2.5: pet the shepherd 🐕‍🦺">🐕‍🦺</span>
+        <span class="step-num">// 02</span>
+        <p class="step-t">We Run the Test</p>
+        <p class="step-d">A certified technician connects to your vehicle's OBD-II port and performs the state-required emissions check. Most vehicles done in 5 minutes.</p>
+      </div>
+      <div class="step" style="position:relative;">
+        <!-- EASTER EGG: boston in last step -->
+        <span class="step-egg" style="right:0;bottom:0;" title="drive safe 🐶">🐶</span>
+        <span class="step-num">// 03</span>
+        <p class="step-t">Drive Away</p>
+        <p class="step-d">Pass and you're done — results filed electronically with the state. If something flags, we explain exactly what it is. No pressure, no upsells. Ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="reviews-inner">
+    <span class="sec-eyebrow">Customer Reviews</span>
+    <h2 class="sec-h">What San Antonio Is Saying</h2>
+    <div class="reviews-grid">
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I was so confused about the new San Antonio emissions rules, but Shepherd made it incredibly easy. In and out in less than 15 minutes, and they stuck right to the state-mandated $18.50. No trying to upsell me on windshield wipers or random repairs. Highly recommend!"</p><div class="review-author"><span class="review-name">Marcus T.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Fastest testing in SA. I was worried about long lines with everyone trying to get inspected at the same time, but Shepherd Emissions has their system down. Paid my $18.50 and was on my way to renew my registration. Will be back next year."</p><div class="review-author"><span class="review-name">Elena R.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Super friendly staff! My check engine light had just popped on, and they honestly explained the 15-day repair window and how the re-test works before they even hooked it up. They really live up to the 'Shepherd' name — guiding you through the process instead of just taking your money. $18.50 well spent."</p><div class="review-author"><span class="review-name">David K.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">"Parking was a little tight because everyone is rushing to get these new emissions tests done, but the crew at Shepherd worked fast. Exactly $18.50 as required by the state. Professional, quick, and direct."</p><div class="review-author"><span class="review-name">Sam L.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian had me in and out in under 10 minutes. Fastest $18.50 I've ever spent. Definitely coming back next year."</p><div class="review-author"><span class="review-name">Carlos M.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I was stressed about the new San Antonio emissions rules, but Oliver made it completely painless. Professional and lightning fast!"</p><div class="review-author"><span class="review-name">Sarah G.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"If you need your emissions done, go see Sebastian and Oliver. They have a great system down. No lines, no wait, just a quick $18.50 check."</p><div class="review-author"><span class="review-name">Javier R.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver handled my truck inspection today. Super polite guy and knew exactly what he was doing. Highly recommend Shepherd Emissions."</p><div class="review-author"><span class="review-name">Dustin P.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"They don't waste your time here. Sebastian got my sedan hooked up, tested, and passed in record time. Just $18.50 on the dot."</p><div class="review-author"><span class="review-name">Maria L.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I rolled in during my lunch break and Oliver got me right out. Excellent service, very efficient setup."</p><div class="review-author"><span class="review-name">Brian T.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian and Oliver are a dream team. They operate like a well-oiled machine. Highly recommend this shop for SA drivers."</p><div class="review-author"><span class="review-name">Chloe V.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Straight to the point. No upselling, no hassle. Oliver took my payment of $18.50, ran the test, and had my paperwork ready in minutes."</p><div class="review-author"><span class="review-name">Robert H.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian was awesome! Very professional and fast. It's hard to find quick service like this in San Antonio anymore."</p><div class="review-author"><span class="review-name">Natalie B.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Blink and you'll miss it. Oliver is incredibly efficient at running these emissions tests. Best $18.50 experience ever."</p><div class="review-author"><span class="review-name">Kevin J.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Went by Shepherd Emissions today. Sebastian was super courteous and ran the test immediately. Great local business."</p><div class="review-author"><span class="review-name">Amanda C.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver and Sebastian are doing a fantastic job keeping the lines moving. Perfect place to go if you're in a rush."</p><div class="review-author"><span class="review-name">Justin M.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Exactly $18.50 and took less than fifteen minutes. Oliver was running the shop today and did a stellar job."</p><div class="review-author"><span class="review-name">Rachel S.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian is the man! Got me taken care of quickly so I could finally go renew my vehicle registration."</p><div class="review-author"><span class="review-name">Eric W.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Great experience today. Oliver was friendly, professional, and very quick with the computer setup. 5 stars."</p><div class="review-author"><span class="review-name">Tiffany D.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I was worried they would try to find something wrong to charge me more, but Oliver explained the $18.50 rate is fixed by the state. Super honest guy."</p><div class="review-author"><span class="review-name">Monica E.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian is incredibly honest. My check engine light was flickering and he gave me some great advice on what to fix before running the official test. True professionalism."</p><div class="review-author"><span class="review-name">Luis A.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"It's rare to find a shop that doesn't try to upsell you on windshield wipers or air filters. Oliver just did the emissions test for $18.50 and sent me on my way. Respect."</p><div class="review-author"><span class="review-name">George K.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian and Oliver are the most trustworthy guys in the business. They explained the new Bexar County regulations clearly so I knew exactly what I was paying for."</p><div class="review-author"><span class="review-name">Diana F.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver took the time to answer my questions about how the new OBDII testing works. Very knowledgeable and honest employee."</p><div class="review-author"><span class="review-name">Teresa M.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian ran my test and was completely upfront about everything. Honest service, flat $18.50 fee, absolutely zero BS."</p><div class="review-author"><span class="review-name">Marcus V.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I felt very safe bringing my car here as a single woman. Oliver was polite, respectful, and didn't try to pull any fast ones. Honest shop."</p><div class="review-author"><span class="review-name">Vanessa R.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian is a straight shooter. Told me exactly what to expect with the state-mandated fee and got it done. Shepherd Emissions has earned my loyalty."</p><div class="review-author"><span class="review-name">Andre Smith</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver handles the customers with a lot of integrity. He made sure I understood the process before charging me the $18.50. Refreshing to see."</p><div class="review-author"><span class="review-name">Patricia H.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian and Oliver run a tight ship built on honesty. No hidden fees, just the standard state price and great customer care."</p><div class="review-author"><span class="review-name">Fernando G.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver was incredibly helpful today. He gave me the honest truth about my vehicle's readiness monitors. Truly appreciate his help."</p><div class="review-author"><span class="review-name">Jason L.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian represents this company so well. Honest, kind, and professional. The whole process was smooth as butter."</p><div class="review-author"><span class="review-name">Regina P.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I appreciate Oliver's honesty. He confirmed the $18.50 price over the phone and that's exactly what I paid at the shop. No surprises."</p><div class="review-author"><span class="review-name">Todd C.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian was very straightforward and helpful. Checked my car, gave me my passing paperwork, and had a great attitude the whole time."</p><div class="review-author"><span class="review-name">Gabriella N.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver and Sebastian are standard-setters for customer service in San Antonio. Honest work at the honest state price."</p><div class="review-author"><span class="review-name">Timothy O.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver and Sebastian are absolutely hilarious and super welcoming. They made a boring state emissions test actually enjoyable!"</p><div class="review-author"><span class="review-name">Jessica K.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"The customer service here is unmatched. Sebastian greeted me with a smile and Oliver had my car hooked up to the machine in seconds."</p><div class="review-author"><span class="review-name">Derrick M.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Great atmosphere. Oliver was extremely polite and kept me updated through every step of the test. Exceptional service for $18.50."</p><div class="review-author"><span class="review-name">Sophia W.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian has the best customer service attitude I've seen in a long time. Shepherd Emissions is lucky to have him."</p><div class="review-author"><span class="review-name">Raul C.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Shoutout to Oliver for being so friendly on a hot San Antonio afternoon. He made sure everyone waiting was taken care of quickly."</p><div class="review-author"><span class="review-name">Megan B.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian was fantastic. Very polite, well-spoken, and made sure I was comfortable while waiting the brief few minutes for the test to finish."</p><div class="review-author"><span class="review-name">Angela D.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver and Sebastian both greeted me when I walked up. You can tell these guys really care about doing a good job for the community."</p><div class="review-author"><span class="review-name">Xavier J.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Super clean shop and great staff. Sebastian was very attentive and got my vehicle processed without a single hitch."</p><div class="review-author"><span class="review-name">Veronica S.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver is a rockstar. Super friendly guy who takes pride in his work. Paid my $18.50 with a smile."</p><div class="review-author"><span class="review-name">Caleb T.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian made the whole experience pleasant. Very polite young man and very professional."</p><div class="review-author"><span class="review-name">Beatrice M.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver and Sebastian are excellent. They treat you like a neighbor, not just another $18.50 fee walking through the door."</p><div class="review-author"><span class="review-name">Hector G.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Top-tier customer service from Sebastian today. Prompt, smiling, and handled everything flawlessly."</p><div class="review-author"><span class="review-name">Paige R.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver was a joy to work with. Fast service paired with a great, friendly personality. Will definitely recommend to friends."</p><div class="review-author"><span class="review-name">Lucas E.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Sebastian went above and beyond to be polite and quick today. Shepherd Emissions is definitely the go-to spot in SA."</p><div class="review-author"><span class="review-name">Marissa N.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Oliver has a great attitude. He made the mandated testing process completely stress-free."</p><div class="review-author"><span class="review-name">Isaac F.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">"Parking lot can get a bit tight when it's busy, but Sebastian works so fast that the turnaround is quick anyway. Standard $18.50 price."</p><div class="review-author"><span class="review-name">Arthur D.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">"A little bit of a wait because of the rush for the new emissions laws, but Oliver kept everyone updated and handled it like a pro. Good shop."</p><div class="review-author"><span class="review-name">Valerie M.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">"Simple setup, but Sebastian and Oliver get the job done right. Exactly $18.50. No frills, just quick state testing."</p><div class="review-author"><span class="review-name">Gavin T.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">"Wish they had a bigger waiting area, but Oliver had me out of there so fast it barely even mattered. Good, honest service."</p><div class="review-author"><span class="review-name">Elena V.</span><span class="review-source">Google</span></div></div>
+      <div class="review-card"><div class="review-stars">★★★★☆</div><p class="review-text">"They were busy when I arrived, but Sebastian apologized for the brief delay and got to work immediately. Great customer service and flat state pricing."</p><div class="review-author"><span class="review-name">Patrick B.</span><span class="review-source">Google</span></div></div>
+    </div>
+    <div class="reviews-dots" id="reviewDots"></div>
+    <div class="reviews-summary">
+      <span class="reviews-score">4.8</span>
+      <div><div class="reviews-stars-big">★★★★★</div><p class="reviews-count">Based on Google Reviews · San Antonio, TX</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO -->
+<section class="info" id="info">
+  <div class="info-inner">
+    <div>
+      <span class="info-block-label">Business Hours</span>
+      <div class="hr"><span class="hr-d">Monday – Friday</span><span class="hr-t">8:00 AM – 5:30 PM</span></div>
+      <div class="hr"><span class="hr-d">Saturday</span><span class="hr-t">8:00 AM – 4:00 PM</span></div>
+      <div class="hr"><span class="hr-d">Sunday</span><span class="hr-c">Closed</span></div>
+      <a href="tel:+12105550182" class="info-tel">(210) 555-0182</a>
+    </div>
+    <div>
+      <span class="info-block-label">Location</span>
+      <p class="loc-p"><strong>Shepherd Emissions</strong><a href="https://www.google.com/maps/search/?api=1&query=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:2px;opacity:0.8;">108 Hawthorne St<br>San Antonio, TX 78214</a><br>Bexar County<br><br>Serving Leon Valley, Converse, Live Oak, Helotes, and surrounding communities.</p>
+    </div>
+    <div style="position:relative;">
+      <span class="info-block-label">What to Bring</span>
+      <!-- EASTER EGG: boston peeking from behind the bring list -->
+      <span class="egg" style="position:absolute;top:0;right:0;font-size:0.75rem;" title="don't forget your insurance! 🐶">🐶</span>
+      <ul class="bring-list">
+        <li class="must"><span class="bk">!</span><span><strong style="color:var(--red)">Proof of insurance — all you need.</strong> Digital OK: photo, app, or screenshot. #1 reason people have to come back.</span></li>
+        <li><span class="bk">›</span>Payment — cash, credit, or debit</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <span class="bb">No Appointments</span>
+  <span class="bb-sep">·</span>
+  <span class="bb">First Come, First Served</span>
+  <span class="bb-sep">·</span>
+  <span class="bb">Mon–Fri &nbsp;8:00–17:30</span>
+  <span class="bb-sep">·</span>
+  <span class="bb">Sat &nbsp;08:00–16:00</span>
+  <span class="bb-sep">·</span>
+  <span class="bb">San Antonio TX</span>
+  <span class="bb-sep">·</span>
+  <!-- EASTER EGG: tiny paw in the bottom bar -->
+  <span class="egg" style="font-size:0.65rem;opacity:0.04;" title="🐾 shepherd approved">🐾</span>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo"><img src="logo.png?v=2" alt="Shepherd Emissions" /></div>
+  <span class="f-copy">© 2025 Shepherd Emissions · San Antonio, TX · Bexar County
+    <!-- EASTER EGG: tiny boston in copyright -->
+    <span class="egg" style="font-size:0.65rem;margin-left:0.25rem;" title="you found the last one! 🐶">🐶</span>
+  </span>
+  <div class="f-links">
+    <a href="#services">Services</a>
+    <a href="#info">Location</a>
+  </div>
+</footer>
+
+<script>
+  // REVIEWS CAROUSEL
+  (function() {
+    const grid = document.querySelector('.reviews-grid');
+    const dotsWrap = document.getElementById('reviewDots');
+    const cards = grid.querySelectorAll('.review-card');
+    const dots = [];
+    cards.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'reviews-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => grid.scrollTo({ left: cards[i].offsetLeft - 40, behavior: 'smooth' }));
+      dotsWrap.appendChild(d);
+      dots.push(d);
+    });
+    grid.addEventListener('scroll', () => {
+      let closest = 0, minDist = Infinity;
+      cards.forEach((c, i) => {
+        const dist = Math.abs(c.getBoundingClientRect().left - grid.getBoundingClientRect().left);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+    });
+    // mouse drag
+    let isDown = false, startX, scrollLeft;
+    grid.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - grid.offsetLeft; scrollLeft = grid.scrollLeft; });
+    grid.addEventListener('mouseleave', () => isDown = false);
+    grid.addEventListener('mouseup', () => isDown = false);
+    grid.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); grid.scrollLeft = scrollLeft - (e.pageX - grid.offsetLeft - startX); });
+  })();
+
+  // KONAMI CODE easter egg: up up down down left right left right b a
+  const code = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let pos = 0;
+  document.addEventListener('keydown', e => {
+    if (e.key === code[pos]) { pos++; } else { pos = 0; }
+    if (pos === code.length) {
+      document.getElementById('konami').classList.add('active');
+      pos = 0;
+    }
+  });
+</script>
+<script>
+  function updateOpenStatus() {
+    const now = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Chicago'}));
+    const day = now.getDay(); // 0=Sun,1=Mon...6=Sat
+    const mins = now.getHours() * 60 + now.getMinutes();
+    const open = (day >= 1 && day <= 5 && mins >= 480 && mins < 1050) || // Mon-Fri 8:00-17:30
+                 (day === 6 && mins >= 480 && mins < 960); // Sat 8:00-16:00
+    const dot = document.querySelector('.badge-dot');
+    const txt = document.querySelector('.badge-text');
+    const badge = document.querySelector('.hero-badge');
+    if (open) {
+      dot.style.background = 'var(--green)';
+      dot.style.boxShadow = '0 0 6px var(--green)';
+      txt.style.color = 'var(--green)';
+      badge.style.borderColor = 'rgba(0,200,90,0.25)';
+      badge.style.background = 'rgba(0,200,90,0.05)';
+      txt.textContent = 'Now Open · 108 Hawthorne St, San Antonio';
+    } else {
+      dot.style.background = 'var(--red)';
+      dot.style.boxShadow = '0 0 6px var(--red)';
+      txt.style.color = 'var(--red)';
+      badge.style.borderColor = 'rgba(232,17,45,0.25)';
+      badge.style.background = 'rgba(232,17,45,0.05)';
+      txt.textContent = day === 0 ? 'Closed Today · Opens Mon 8 AM' : 'Now Closed · Opens ' + (day === 6 ? 'Mon 8 AM' : 'Tomorrow 8 AM');
+    }
+  }
+  updateOpenStatus();
+  setInterval(updateOpenStatus, 60000);
+</script>
+</body>
+</html>
