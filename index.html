@@ -586,43 +586,36 @@
       /* Top dir bar */
       .dir-bar { font-size: 0.58rem; padding: 0 1rem; justify-content: center; gap: 0.75rem; }
 
-      /* Nav: logo + wordmark, links hidden (shown in mobile-nav-links bar) */
-      nav { padding: 0 1rem; height: 52px; }
+      /* Nav: bigger on mobile for readability */
+      nav { padding: 0 1rem; height: 60px; }
       .nav-links { display: none; }
-      /* info-bar: below dir bar (34) + nav (52) */
-      .info-bar { top: calc(34px + 52px); }
-      /* mobile nav links: below info-bar */
-      .mobile-nav-links { top: calc(34px + 52px + 44px); }
-      .nav-wordmark { font-size: 0.68rem; }
-      .nav-logo-sm { width: 30px; height: 30px; }
+      .nav-wordmark { font-size: 0.78rem; }
+      .nav-logo-sm { width: 36px; height: 36px; }
 
-      /* Info bar: 3 blocks — Hours | ⚠ Insurance | Phone */
-      .info-bar { height: auto; min-height: 44px; flex-wrap: nowrap; }
+      /* Info bar: bigger, easier to read */
+      .info-bar { top: calc(34px + 60px); height: auto; min-height: 56px; flex-wrap: nowrap; }
       .info-bar-block { display: none; } /* hide hours + address on mobile */
-      .info-bar-ins { padding: 0 1rem; }
-      .info-bar-ins-val { font-size: 0.64rem; }
-      .info-bar-tel { font-size: 0.68rem; padding: 0 1rem; }
-      .info-bar-ins-val { font-size: 0.6rem; }
-      .info-bar-ins-label { font-size: 0.46rem; }
-      .info-bar-label { font-size: 0.46rem; }
-      .info-bar-tel { font-size: 0.66rem; padding: 0 0.85rem; letter-spacing: 0; }
+      .info-bar-ins { padding: 0 1.1rem; flex: 1; }
+      .info-bar-ins-label { font-size: 0.55rem; letter-spacing: 0.18em; }
+      .info-bar-ins-val { font-size: 0.82rem; font-weight: 700; }
+      .info-bar-tel { font-size: 0.82rem; font-weight: 700; padding: 0 1.1rem; letter-spacing: 0.02em; }
 
-      /* Mobile nav links row below info bar */
+      /* Mobile nav links: below info-bar */
       .mobile-nav-links {
         display: flex; background: rgba(8,15,28,0.98); border-bottom: 1px solid var(--border);
-        position: fixed; top: calc(34px + 52px + 44px); left: 0; right: 0; z-index: 198;
+        position: fixed; top: calc(34px + 60px + 56px); left: 0; right: 0; z-index: 198;
       }
       .mobile-nav-links a {
-        flex: 1; text-align: center; padding: 0.55rem 0.25rem;
-        font-size: 0.56rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+        flex: 1; text-align: center; padding: 0.6rem 0.25rem;
+        font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
         color: var(--dimmer); text-decoration: none; border-right: 1px solid var(--border);
         transition: color 0.2s;
       }
       .mobile-nav-links a:last-child { border-right: none; }
       .mobile-nav-links a:hover { color: var(--white); }
 
-      /* Hero: account for dir(34) + nav(52) + info-bar(44) + mobile-nav(30) = 160px + breathing room */
-      .hero { padding: 12rem 1rem 3rem; justify-content: flex-start; }
+      /* Hero: account for dir(34) + nav(60) + info-bar(56) + mobile-nav(38) */
+      .hero { padding: 13rem 1rem 3rem; justify-content: flex-start; }
       .hero-logo-circle { width: 180px; height: 180px; }
       .hero-logo-ring::before { width: 176px; height: 176px; }
       .hero-logo-ring::after { width: 190px; height: 190px; }
