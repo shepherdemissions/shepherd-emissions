@@ -47,8 +47,8 @@
     /* ── DIRECTIONS BAR ── */
     .dir-bar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 201;
-      height: 34px; display: flex; align-items: center; justify-content: center; gap: 1.5rem;
-      background: var(--red); padding: 0 1.5rem;
+      height: 38px; display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      background: var(--red); padding: 0 2.5rem;
     }
     .dir-bar a {
       display: flex; align-items: center; gap: 0.5rem;
@@ -538,7 +538,6 @@
     /* ── RESPONSIVE ── */
     /* ── TABLET (≤860px) ── */
     @media (max-width: 860px) {
-      .dir-addr { display: none; }
       .dir-sep { display: none; }
 
       /* Nav: tighten, keep links visible on tablet */
@@ -707,11 +706,7 @@
 
 <!-- DIRECTIONS BAR -->
 <div class="dir-bar">
-  <a class="dir-addr" href="https://www.google.com/maps/search/?api=1&query=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener">108 Hawthorne St, San Antonio, TX 78214</a>
-  <span class="dir-sep">·</span>
-  <a href="https://www.google.com/maps/dir/?api=1&destination=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener">
-    ↗ Get Directions
-  </a>
+  <a class="dir-addr" href="https://www.google.com/maps/dir/?api=1&destination=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener">108 Hawthorne St, San Antonio, TX 78214</a>
 </div>
 
 <!-- NAV -->
