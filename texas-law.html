@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Texas Vehicle Inspection Law — Shepherd Emissions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #111827;
+      --ink2:       #374151;
+      --ink3:       #6B7280;
+      --ink4:       #9CA3AF;
+      --paper:      #FFFFFF;
+      --paper2:     #F9FAFB;
+      --paper3:     #F3F4F6;
+      --border:     #E5E7EB;
+      --border2:    #D1D5DB;
+      --red:        #B91C1C;
+      --red-bg:     #FEF2F2;
+      --red-border: #FECACA;
+      --green:      #15803D;
+      --green-bg:   #F0FDF4;
+      --green-border:#BBF7D0;
+      --gold:       #92400E;
+      --gold-bg:    #FFFBEB;
+      --gold-border:#FCD34D;
+      --blue:       #1D4ED8;
+      --blue-bg:    #EFF6FF;
+      --blue-border:#BFDBFE;
+      --nav-bg:     #080F1C;
+      --nav-border: rgba(255,255,255,0.09);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--paper2);
+      color: var(--ink);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV (keeps brand dark) ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      background: var(--nav-bg); backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--nav-border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
+    .nav-logo-sm { width: 34px; height: 34px; flex-shrink: 0; }
+    .nav-logo-sm img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-wordmark { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+    .nav-back {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); text-decoration: none; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px; padding: 0.35rem 0.85rem; transition: all 0.2s;
+    }
+    .nav-back:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+    /* ── PAGE WRAPPER ── */
+    .page-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    /* ── PAGE HEADER ── */
+    .doc-header {
+      padding: 5.5rem 0 2rem;
+      border-bottom: 2px solid var(--border2);
+      margin-bottom: 0;
+    }
+    .doc-agency {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--red); display: block; margin-bottom: 0.5rem;
+    }
+    .doc-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700; line-height: 1.1;
+      color: var(--ink); margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+    .doc-subtitle {
+      font-size: 1rem; color: var(--ink2); line-height: 1.6; max-width: 640px;
+      margin-bottom: 1.5rem;
+    }
+    .doc-meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1.25rem;
+    }
+    .doc-meta-item { font-size: 0.8rem; color: var(--ink3); }
+    .doc-meta-item strong { color: var(--ink2); font-weight: 600; }
+    .doc-notice {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-left: 4px solid #D97706; border-radius: 4px;
+      padding: 0.9rem 1.1rem; font-size: 0.85rem; line-height: 1.65; color: var(--gold);
+      margin-bottom: 0;
+    }
+    .doc-notice strong { color: var(--gold); }
+
+    /* ── TOC ── */
+    .toc-section {
+      background: var(--paper3); border: 1px solid var(--border2); border-radius: 6px;
+      padding: 1.5rem; margin: 1.75rem 0;
+    }
+    .toc-title {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink3); margin-bottom: 1rem;
+    }
+    .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.25rem; }
+    .toc-grid a {
+      font-size: 0.82rem; color: var(--blue); text-decoration: none;
+      padding: 0.3rem 0.5rem; border-radius: 3px; display: flex; align-items: baseline; gap: 0.4rem;
+      transition: background 0.15s;
+    }
+    .toc-grid a:hover { background: var(--blue-bg); }
+    .toc-num { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ink4); flex-shrink: 0; }
+
+    /* ── LAW SECTIONS ── */
+    .law-section {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .law-section:last-child { border-bottom: none; }
+
+    .section-header { margin-bottom: 1.25rem; }
+    .section-num {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--ink4); display: block; margin-bottom: 0.3rem;
+    }
+    .section-num.county { color: #D97706; }
+    .section-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.35rem; font-weight: 700; color: var(--ink);
+      line-height: 1.2; margin-bottom: 0.3rem;
+    }
+    .section-cite {
+      font-size: 0.72rem; color: var(--ink4); font-style: italic; display: block;
+    }
+
+    /* ── PLAIN ENGLISH BOX ── */
+    .plain-box {
+      background: var(--green-bg); border: 1px solid var(--green-border);
+      border-left: 4px solid var(--green); border-radius: 4px;
+      padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .plain-box.gold {
+      background: var(--gold-bg); border-color: var(--gold-border);
+      border-left-color: #D97706;
+    }
+    .plain-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--green); display: block; margin-bottom: 0.4rem;
+    }
+    .plain-label.gold { color: #92400E; }
+    .plain-box p { font-size: 0.88rem; line-height: 1.75; color: var(--ink2); }
+    .plain-box p strong { color: var(--ink); font-weight: 600; }
+
+    /* ── STATUTE QUOTE ── */
+    .statute-box {
+      background: var(--paper3); border: 1px solid var(--border2);
+      border-left: 4px solid var(--border2); border-radius: 4px;
+      padding: 0.9rem 1.25rem; margin-bottom: 1rem;
+    }
+    .statute-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--ink3); display: block; margin-bottom: 0.5rem;
+    }
+    .statute-box blockquote {
+      font-size: 0.83rem; line-height: 1.8; color: var(--ink2);
+      border: none; padding: 0; font-style: italic;
+    }
+    .statute-box blockquote em { font-style: normal; font-weight: 600; color: var(--ink); }
+
+    /* ── DATA TABLE ── */
+    .data-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.85rem; }
+    .data-table thead tr { background: var(--paper3); }
+    .data-table th {
+      text-align: left; padding: 0.55rem 0.75rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink3); border-bottom: 2px solid var(--border2);
+    }
+    .data-table td {
+      padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border);
+      vertical-align: top; line-height: 1.5; color: var(--ink2);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--paper3); }
+    .data-table td:first-child { color: var(--ink3); width: 38%; font-weight: 500; }
+    .tag-yes { display: inline-block; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); border-radius: 3px; padding: 0.05rem 0.45rem; font-size: 0.72rem; font-weight: 700; font-family: 'Space Mono', monospace; }
+    .tag-no  { display: inline-block; background: var(--red-bg);   color: var(--red);   border: 1px solid var(--red-border);   border-radius: 3px; padding: 0.05rem 0.45rem; font-size: 0.72rem; font-weight: 700; font-family: 'Space Mono', monospace; }
+    .tag-val { display: inline-block; background: var(--blue-bg);  color: var(--blue);  border: 1px solid var(--blue-border);  border-radius: 3px; padding: 0.05rem 0.45rem; font-size: 0.72rem; font-weight: 700; font-family: 'Space Mono', monospace; }
+    .tag-exempt { display: inline-block; background: var(--paper3); color: var(--ink3); border: 1px solid var(--border2); border-radius: 3px; padding: 0.05rem 0.45rem; font-size: 0.72rem; font-weight: 700; font-family: 'Space Mono', monospace; }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      border: 1px solid var(--border2); border-left: 4px solid var(--ink3); border-radius: 4px;
+      padding: 0.9rem 1.1rem; font-size: 0.85rem; line-height: 1.7; color: var(--ink2); margin-top: 1rem;
+    }
+    .callout.green { background: var(--green-bg); border-color: var(--green-border); border-left-color: var(--green); }
+    .callout.red   { background: var(--red-bg);   border-color: var(--red-border);   border-left-color: var(--red); }
+    .callout.gold  { background: var(--gold-bg);  border-color: var(--gold-border);  border-left-color: #D97706; }
+    .callout strong { color: var(--ink); font-weight: 600; }
+    .callout.green strong { color: var(--green); }
+    .callout.red   strong { color: var(--red); }
+    .callout.gold  strong { color: #92400E; }
+
+    /* ── SUBSECTION HEADING ── */
+    h3.sub-head {
+      font-size: 0.92rem; font-weight: 700; color: var(--ink);
+      margin: 1.75rem 0 0.75rem; padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .law-note { font-size: 0.8rem; line-height: 1.7; color: var(--ink3); margin-top: 0.75rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--nav-bg); color: rgba(255,255,255,0.5);
+      padding: 1.5rem 2rem; display: flex; flex-wrap: wrap; gap: 1rem;
+      justify-content: space-between; align-items: center; font-size: 0.72rem;
+    }
+    footer a { color: rgba(255,255,255,0.5); text-decoration: underline; text-underline-offset: 2px; }
+    footer a:hover { color: #fff; }
+    .f-logo { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; }
+    .f-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      nav { padding: 0 1rem; }
+      .nav-wordmark { display: none; }
+      .page-wrap { padding: 0 1rem 4rem; }
+      .doc-header { padding: 4.5rem 0 1.5rem; }
+      .toc-grid { grid-template-columns: 1fr 1fr; }
+      .data-table td:first-child { width: 42%; }
+      footer { padding: 1.25rem 1rem; }
+    }
+    @media (max-width: 420px) {
+      .toc-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 1.15rem; }
+      .doc-title { font-size: 1.7rem; }
+      .data-table { font-size: 0.78rem; }
+      .data-table td { padding: 0.5rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="index.html">
+    <div class="nav-logo-sm"><img src="logo.png?v=2" alt="Shepherd Emissions" /></div>
+    <span class="nav-wordmark">Shepherd Emissions</span>
+  </a>
+  <a class="nav-back" href="index.html">← Back to Site</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <span class="doc-agency">Texas Transportation Code · Health &amp; Safety Code · TCEQ Rules</span>
+    <h1 class="doc-title">Texas Vehicle Inspection Law</h1>
+    <p class="doc-subtitle">A plain-language reference to every state and county rule governing vehicle emissions inspections in Bexar County (San Antonio) — who needs one, who is exempt, fees, insurance requirements, and what happens if you fail. Reflects the 2025 safety inspection elimination (HB 3297).</p>
+    <div class="doc-meta">
+      <span class="doc-meta-item"><strong>Effective:</strong> 2026 · Reflects HB 3297 (eff. March 1, 2025)</span>
+      <span class="doc-meta-item"><strong>County:</strong> Bexar County, Texas</span>
+      <span class="doc-meta-item"><strong>Authority:</strong> TCEQ · TxDMV · Tex. Transp. Code Ch. 548</span>
+    </div>
+    <div class="doc-notice">
+      <strong>Notice:</strong> This page summarizes Texas law as applied in Bexar County as of 2026 and is provided for informational purposes only. Statutes may be amended. For the authoritative text of any statute, visit <strong>statutes.capitol.texas.gov</strong> or consult a licensed attorney.
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc-section">
+    <p class="toc-title">Table of Contents</p>
+    <div class="toc-grid">
+      <a href="#s0"><span class="toc-num">§ 00</span> Bexar County — Local Rules</a>
+      <a href="#s1"><span class="toc-num">§ 01</span> Who Needs an Inspection</a>
+      <a href="#s2"><span class="toc-num">§ 02</span> Vehicles Exempt</a>
+      <a href="#s3"><span class="toc-num">§ 03</span> Why Bexar Is Designated</a>
+      <a href="#s4"><span class="toc-num">§ 04</span> OBD-II Test — What It Is</a>
+      <a href="#s5"><span class="toc-num">§ 05</span> Inspection Fee — $18.50</a>
+      <a href="#s6"><span class="toc-num">§ 06</span> Insurance Requirement</a>
+      <a href="#s7"><span class="toc-num">§ 07</span> Minimum Liability Limits</a>
+      <a href="#s8"><span class="toc-num">§ 08</span> Out-of-State Transfers</a>
+      <a href="#s9"><span class="toc-num">§ 09</span> Failing — 15-Day Rule</a>
+      <a href="#s10"><span class="toc-num">§ 10</span> Monitors Not Ready</a>
+      <a href="#s11"><span class="toc-num">§ 11</span> Inspection &amp; Registration Link</a>
+    </div>
+  </div>
+
+  <!-- 2025 CHANGE NOTICE -->
+  <div class="callout gold" style="margin-bottom: 0;">
+    <strong>⚡ What Changed in 2025 (Still Applies in 2026)</strong><br>
+    Texas HB 3297 (passed 2023, effective March 1, 2025) <strong>eliminated the annual safety inspection</strong> for most non-commercial passenger vehicles statewide. There is no longer a separate safety certificate or windshield inspection sticker for regular cars and trucks. <strong>However, the OBD-II emissions test is still fully required</strong> for vehicles registered in Bexar County — that requirement did not change. If your gasoline car or truck is 2–24 years old and registered in Bexar County, you must pass the emissions test every year to renew your registration.
+  </div>
+
+  <!-- § 00 BEXAR COUNTY -->
+  <div class="law-section" id="s0">
+    <div class="section-header">
+      <span class="section-num county">§ 00 · Bexar County Specific</span>
+      <h2 class="section-title">Bexar County — Rules for San Antonio Residents</h2>
+      <span class="section-cite">30 Tex. Admin. Code § 114.50 · Tex. Health &amp; Safety Code § 382.0622 · Tex. Transp. Code § 502.040</span>
+    </div>
+
+    <div class="plain-box gold">
+      <span class="plain-label gold">Why Bexar County Is Different</span>
+      <p>Bexar County is specifically designated by the Texas Commission on Environmental Quality (TCEQ) as a vehicle emissions testing area. That designation is what makes the OBD-II emissions test mandatory here. The rules in this section apply to all qualifying vehicles <strong>registered</strong> in Bexar County — not just vehicles driven here.</p>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Rule</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Why Bexar is designated</td><td>Near-nonattainment classification for EPA 8-hour ozone standard — air quality compliance requirement</td></tr>
+        <tr><td>Governing agency (state)</td><td>Texas Commission on Environmental Quality (TCEQ)</td></tr>
+        <tr><td>Governing agency (county)</td><td>Bexar County Tax Assessor-Collector — administers vehicle registration</td></tr>
+        <tr><td>Inspection required before registration?</td><td><span class="tag-yes">YES</span> — a passing emissions result must be on file with TxDMV before Bexar County will issue or renew your registration</td></tr>
+        <tr><td>Just moved to Bexar County?</td><td>Emissions test required at your first registration renewal in Bexar County — even if the vehicle passed elsewhere last year</td></tr>
+        <tr><td>Vehicle registered outside Bexar?</td><td>No emissions test required, even if you drive in San Antonio daily. The requirement follows <em>registration</em>, not location.</td></tr>
+        <tr><td>Registering in a neighboring county to avoid the test</td><td>Only legal if you genuinely reside there. Registering in a county where you don't live is fraud under Tex. Transp. Code § 502.040.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 502.040 — Registration in County of Residence</span>
+      <blockquote>"An owner of a motor vehicle… shall register the vehicle in the county in which the owner resides… A person commits an offense if the person registers a vehicle in a county other than the county in which the person resides…"</blockquote>
+    </div>
+
+    <h3 class="sub-head">Bexar County Registration Process (2026)</h3>
+    <table class="data-table">
+      <thead><tr><th>Step</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Step 1</td><td>Pass OBD-II emissions test at a TCEQ-licensed station</td></tr>
+        <tr><td>Step 2</td><td>Results transmitted electronically to TxDMV — typically within minutes of the test</td></tr>
+        <tr><td>Step 3</td><td>Renew registration online at TxDMV.gov, by mail, or in person at the Bexar County Tax Assessor-Collector office</td></tr>
+        <tr><td>County offices</td><td>Main: 233 N. Pecos La Trinidad · Branches: Crossroads, Leon Valley, Northeast, Southside, and others</td></tr>
+        <tr><td>Online renewal</td><td>Available at TxDMV.gov, usually within 24 hours of passing inspection</td></tr>
+        <tr><td>Late registration penalty</td><td>$10 if expired 1–10 days; increases thereafter (Tex. Transp. Code § 502.407)</td></tr>
+        <tr><td>Bexar County road and bridge fee</td><td>$10 county-specific fee, added to registration — separate from state fees</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-head">Licensed Inspection Stations</h3>
+    <table class="data-table">
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>Who can perform the test?</td><td>Only TCEQ-licensed Vehicle Emissions Inspection and Maintenance (VEIM) stations with certified equipment and technicians</td></tr>
+        <tr><td>Can any mechanic do it?</td><td><span class="tag-no">NO</span> — must be a licensed TCEQ station; an ordinary mechanic cannot issue a passing certificate</td></tr>
+        <tr><td>How to verify a station is licensed</td><td>Search the TCEQ licensed facilities database at tceq.texas.gov</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout green">
+      <strong>Bottom line for Bexar County:</strong> If your gasoline car or truck is 2–24 years old and registered in Bexar County, you need the OBD-II emissions test every year. Motorcycles, EVs, vehicles 25+ years old, and vehicles in their first two model years owe nothing.
+    </div>
+  </div>
+
+  <!-- § 01 WHO NEEDS IT -->
+  <div class="law-section" id="s1">
+    <div class="section-header">
+      <span class="section-num">§ 01</span>
+      <h2 class="section-title">Who Needs an Emissions Inspection in 2026</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.301 · Tex. Health &amp; Safety Code § 382.0622 · HB 3297 (2023)</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>As of 2026, the only annual vehicle inspection required in Bexar County is the <strong>OBD-II emissions test</strong> — and only for gasoline-powered vehicles that are 2 to 24 years old, registered in Bexar County. The separate safety inspection was eliminated on March 1, 2025. Motorcycles, electric vehicles, and vehicles 25 years or older do not need any annual inspection.</p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 548.301 — Emissions Inspection</span>
+      <blockquote>"The department shall require… an emissions inspection… for a vehicle… registered in a county that is included in a vehicle emissions inspection program established under Chapter 382, Health and Safety Code."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Factor</th><th>Requirement</th></tr></thead>
+      <tbody>
+        <tr><td>Vehicle age</td><td><span class="tag-val">2 – 24 years old</span> — annual emissions test required</td></tr>
+        <tr><td>Vehicle type</td><td>Gasoline-powered passenger cars and light trucks</td></tr>
+        <tr><td>Registration county</td><td>Bexar County (San Antonio) — designated emissions county</td></tr>
+        <tr><td>Frequency</td><td>Once per year, tied to vehicle registration renewal</td></tr>
+        <tr><td>Annual safety inspection</td><td><span class="tag-exempt">ELIMINATED</span> for non-commercial vehicles as of March 1, 2025 (HB 3297)</td></tr>
+        <tr><td>Motorcycles</td><td><span class="tag-exempt">NOT REQUIRED</span> — exempt from emissions program; safety inspection also eliminated</td></tr>
+        <tr><td>Electric vehicles</td><td><span class="tag-exempt">NOT REQUIRED</span> — exempt from emissions; no safety inspection</td></tr>
+        <tr><td>Vehicles 25+ years old</td><td><span class="tag-exempt">NOT REQUIRED</span> — completely exempt from all inspection requirements</td></tr>
+        <tr><td>Diesel vehicles</td><td>A separate opacity/smoke test may apply — not OBD-II; confirm with TxDMV</td></tr>
+        <tr><td>Commercial vehicles (18-wheelers, buses)</td><td>Different rules — annual safety inspection still required under a separate commercial program</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- § 02 EXEMPTIONS -->
+  <div class="law-section" id="s2">
+    <div class="section-header">
+      <span class="section-num">§ 02</span>
+      <h2 class="section-title">Vehicles Exempt — No Inspection Required</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.052 · § 548.301(c) · HB 3297 (2023) · 30 Tex. Admin. Code § 114.50(b)</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>As of 2026, the following vehicles <strong>do not need any annual inspection</strong> in Texas — not emissions, not safety. If your vehicle is on this list, you do not need to visit an inspection station at all.</p>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Vehicle Type</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Motorcycles</td><td><span class="tag-exempt">EXEMPT</span> — no emissions inspection; safety inspection eliminated 2025</td></tr>
+        <tr><td>Electric vehicles (EVs)</td><td><span class="tag-exempt">EXEMPT</span> — no emissions inspection; no safety inspection</td></tr>
+        <tr><td>Plug-in hybrid vehicles</td><td><span class="tag-exempt">EXEMPT</span> from emissions inspection</td></tr>
+        <tr><td>Standard hybrid vehicles (e.g., Prius)</td><td>Follow gasoline vehicle rules — test required if 2–24 years old and registered in Bexar County</td></tr>
+        <tr><td>Vehicles 25+ years old</td><td><span class="tag-exempt">EXEMPT</span> — completely exempt from all inspection requirements</td></tr>
+        <tr><td>New vehicles (first two model years)</td><td><span class="tag-exempt">EXEMPT</span> — no inspection required for the first two model years after first sale</td></tr>
+        <tr><td>Trailers</td><td><span class="tag-exempt">EXEMPT</span> — generally exempt from emissions inspection requirements</td></tr>
+        <tr><td>Farm / off-road equipment</td><td><span class="tag-exempt">EXEMPT</span> — not registered for road use</td></tr>
+        <tr><td>Diesel vehicles</td><td>Separate opacity/smoke test may apply — not OBD-II; check with TxDMV</td></tr>
+        <tr><td>Commercial vehicles (18-wheelers, buses)</td><td>Still subject to annual safety inspection under a separate program</td></tr>
+      </tbody>
+    </table>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 548.052 — Exemptions</span>
+      <blockquote>"The following vehicles are exempt from the inspection requirements… a motor vehicle that is… (1) a new motor vehicle for the first two years after the vehicle is first sold… (2) a motor vehicle that is 25 or more years old."</blockquote>
+    </div>
+
+    <div class="callout green">
+      <strong>If you ride a motorcycle, drive an EV, or your car is 25+ years old — no inspection is required.</strong> You do not need to come to an inspection station.
+    </div>
+  </div>
+
+  <!-- § 03 DESIGNATED COUNTY -->
+  <div class="law-section" id="s3">
+    <div class="section-header">
+      <span class="section-num">§ 03</span>
+      <h2 class="section-title">Bexar County as a Designated Emissions County</h2>
+      <span class="section-cite">Tex. Health &amp; Safety Code § 382.0622 · § 382.202 · TCEQ Designated Area Rules</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>Not every county in Texas requires an emissions test — only those officially designated by the TCEQ. <strong>Bexar County (San Antonio) is a designated county</strong>, which is why qualifying vehicles registered here must pass an annual OBD-II emissions test while vehicles in most other Texas counties do not.</p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Health &amp; Safety Code § 382.0622 — Designated Counties</span>
+      <blockquote>"The commission [TCEQ] shall designate… counties in which motor vehicle emissions inspections are required… based on… air quality standards… population… and whether the area is classified as nonattainment."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>County</td><td>Bexar County (San Antonio metro area)</td></tr>
+        <tr><td>Designation basis</td><td>EPA nonattainment / near-nonattainment area for the 8-hour ozone NAAQS standard</td></tr>
+        <tr><td>Designating agency</td><td>Texas Commission on Environmental Quality (TCEQ)</td></tr>
+        <tr><td>Other designated Texas counties</td><td>Harris (Houston), Dallas, Tarrant (Fort Worth), Travis (Austin), El Paso, and others</td></tr>
+        <tr><td>Moving from a non-emissions county</td><td>Emissions test required at your next registration renewal once registered in Bexar County</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- § 04 OBD-II TEST -->
+  <div class="law-section" id="s4">
+    <div class="section-header">
+      <span class="section-num">§ 04</span>
+      <h2 class="section-title">OBD-II Emissions Test — What It Is</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.301 · 30 Tex. Admin. Code § 114.50 · EPA 40 CFR Part 85</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>The emissions test used in Bexar County is an <strong>On-Board Diagnostics II (OBD-II) scan</strong>. A certified technician connects to the diagnostic port under your dashboard and reads your vehicle's computer. The system checks whether your engine's emissions-related monitors have completed their self-tests and whether any emissions-related fault codes (DTCs) are active. <strong>There is no tailpipe probe and no visual exhaust inspection</strong> — it is a computer-to-computer read.</p>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Test method</td><td>OBD-II port scan (diagnostic port, driver's side, under dash)</td></tr>
+        <tr><td>Applies to</td><td>Model year 1996 and newer gasoline-powered vehicles (OBD-II was federally mandated starting MY1996)</td></tr>
+        <tr><td>What is checked</td><td>Diagnostic Trouble Codes (DTCs) · Readiness monitor status · Malfunction Indicator Lamp (MIL) / check engine light</td></tr>
+        <tr><td>Pass condition</td><td>No active emissions-related DTCs · Required readiness monitors complete · MIL not commanded on</td></tr>
+        <tr><td>Fail condition</td><td>Any active emissions DTC · MIL illuminated · Too many monitors in "Not Ready" status (see § 10)</td></tr>
+        <tr><td>Equipment standard</td><td>TCEQ-certified OBD-II analyzer, updated to current Vehicle Identification Database (VID)</td></tr>
+        <tr><td>Typical test time</td><td>Under 5 minutes for most vehicles</td></tr>
+      </tbody>
+    </table>
+
+    <div class="statute-box">
+      <span class="statute-label">30 Tex. Admin. Code § 114.50 — OBD-II Inspection Procedures</span>
+      <blockquote>"The emissions inspection… shall consist of… an on-board diagnostic (OBD) system check using equipment… approved by the executive director… The inspection shall determine whether: (1) a malfunction indicator light (MIL) is commanded on; (2) any… diagnostic trouble codes (DTCs) are present; (3) the required OBD system monitors have completed their self-diagnostic routines."</blockquote>
+    </div>
+  </div>
+
+  <!-- § 05 FEE -->
+  <div class="law-section" id="s5">
+    <div class="section-header">
+      <span class="section-num">§ 05</span>
+      <h2 class="section-title">Inspection Fee — $18.50, Set by State Law</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.509 · § 548.5055</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>The emissions inspection fee in Texas is <strong>set by state law at $18.50</strong> for most passenger vehicles and light trucks. Every licensed station must charge exactly this amount for the inspection — no more, no less. Any station charging more or less than $18.50 for the inspection certificate itself is in violation of state law. <strong>The fee is fixed and non-negotiable.</strong></p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 548.509 — Inspection Station Fee</span>
+      <blockquote>"The fee for a vehicle inspection certificate… is $18.50 for a passenger car or light truck… A station or inspector may not charge a fee other than the fee established under this section for the issuance of a vehicle inspection certificate."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Vehicle Category</th><th>Fee</th></tr></thead>
+      <tbody>
+        <tr><td>Passenger car / light truck (OBD-II)</td><td><span class="tag-val">$18.50</span> — state-mandated, applies to all licensed stations</td></tr>
+        <tr><td>Motorcycles</td><td><span class="tag-exempt">EXEMPT</span> — no inspection required in 2026; no fee applies</td></tr>
+        <tr><td>Electric vehicles</td><td><span class="tag-exempt">EXEMPT</span> — no inspection required; no fee applies</td></tr>
+        <tr><td>Vehicles 25+ years old</td><td><span class="tag-exempt">EXEMPT</span> — no inspection required; no fee applies</td></tr>
+        <tr><td>Can a station charge more than $18.50?</td><td><span class="tag-no">ILLEGAL</span> — violation of § 548.509</td></tr>
+        <tr><td>Can a station charge less?</td><td><span class="tag-no">ILLEGAL</span> — also a violation of § 548.509</td></tr>
+        <tr><td>Additional services (e.g., oil change)</td><td>Stations may separately charge for unrelated services — only the inspection fee itself is fixed by law</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- § 06 INSURANCE -->
+  <div class="law-section" id="s6">
+    <div class="section-header">
+      <span class="section-num">§ 06</span>
+      <h2 class="section-title">Proof of Insurance — Required to Pass</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.104 · § 601.051 · § 601.053</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>Texas law requires you to provide <strong>valid proof of liability insurance</strong> before an inspection can be completed. This is a statutory requirement — not a station policy. <strong>Digital proof is legally acceptable</strong> under Tex. Transp. Code § 601.053: a photo on your phone, a screenshot, or your insurer's app all qualify. A printed card is not required.</p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 548.104 — Insurance Verification at Inspection</span>
+      <blockquote>"A vehicle inspection station… may not issue a vehicle inspection certificate for a vehicle unless the owner or operator of the vehicle provides evidence of financial responsibility… in a form authorized under Chapter 601."</blockquote>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 601.051 — Financial Responsibility Required</span>
+      <blockquote>"A person may not operate a motor vehicle in this state unless financial responsibility is established for the vehicle through… an automobile liability insurance policy… in at least the minimum amounts required by Section 601.072."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Is insurance required at inspection?</td><td><span class="tag-yes">YES</span> — mandatory under § 548.104 and § 601.051</td></tr>
+        <tr><td>Acceptable forms of proof</td><td>Physical card · Phone photo of card · Screenshot · Insurance app · PDF · Email</td></tr>
+        <tr><td>Is digital proof accepted?</td><td><span class="tag-yes">YES</span> — authorized under Tex. Transp. Code § 601.053</td></tr>
+        <tr><td>Out-of-state insurance</td><td>Accepted if it meets Texas minimum liability limits (see § 07)</td></tr>
+        <tr><td>What if you don't have proof?</td><td>The inspection cannot be completed and no certificate can be issued. You must return with proof of insurance.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout red">
+      <strong>No proof of insurance = no inspection.</strong> This is the most common reason customers have to leave and come back. Have your insurance ready — digital is fine.
+    </div>
+  </div>
+
+  <!-- § 07 INSURANCE MINIMUMS -->
+  <div class="law-section" id="s7">
+    <div class="section-header">
+      <span class="section-num">§ 07</span>
+      <h2 class="section-title">Texas Minimum Liability Insurance Limits</h2>
+      <span class="section-cite">Tex. Transp. Code § 601.072 · Tex. Ins. Code § 1952.001</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>Your liability policy must cover at least the amounts below. If your insurance — including an out-of-state policy — meets or exceeds these numbers, it qualifies. Most standard U.S. auto insurance policies already meet or exceed these limits. <strong>Check your declarations page</strong> (the summary page of your policy) to confirm your coverage amounts.</p>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Coverage</th><th>Minimum Required</th></tr></thead>
+      <tbody>
+        <tr><td>Bodily injury — per person, per accident</td><td><span class="tag-val">$30,000</span></td></tr>
+        <tr><td>Bodily injury — total per accident</td><td><span class="tag-val">$60,000</span></td></tr>
+        <tr><td>Property damage — per accident</td><td><span class="tag-val">$25,000</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 601.072 — Minimum Amounts of Financial Responsibility</span>
+      <blockquote>"The amounts of financial responsibility required… are: (1) $30,000 for bodily injury to or death of one person in one accident; (2) $60,000 for bodily injury to or death of two or more persons in one accident; (3) $25,000 for destruction of property of others in one accident."</blockquote>
+    </div>
+
+    <p class="law-note">These are commonly called the "30/60/25" minimums. Texas raised these limits from the previous 20/40/15 minimums in 2011. If your policy predates 2011, confirm your current coverage amounts with your insurer.</p>
+  </div>
+
+  <!-- § 08 OUT OF STATE -->
+  <div class="law-section" id="s8">
+    <div class="section-header">
+      <span class="section-num">§ 08</span>
+      <h2 class="section-title">Out-of-State Vehicle Transfers to Texas</h2>
+      <span class="section-cite">Tex. Transp. Code § 501.0234 · § 548.301 · § 501.145</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>If you are moving to Texas, purchasing a vehicle from out of state, or transferring a title to Texas plates, <strong>a passing emissions inspection is required before you can register the vehicle in Bexar County</strong>. Your existing out-of-state insurance is accepted — you do not need to switch to a Texas insurer before the inspection, as long as your current policy meets the 30/60/25 minimums (§ 07).</p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 501.0234 — Title Application Requirements</span>
+      <blockquote>"An applicant for a Texas certificate of title for a motor vehicle… must provide… evidence that the vehicle has passed a vehicle inspection… required under Chapter 548… if the vehicle is to be registered in a county that requires an emissions inspection."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>Is an inspection required to get Texas plates?</td><td><span class="tag-yes">YES</span> — required prior to title transfer in Bexar County</td></tr>
+        <tr><td>Is out-of-state insurance accepted?</td><td><span class="tag-yes">YES</span> — if it meets the Texas 30/60/25 minimums</td></tr>
+        <tr><td>Must I switch to a Texas insurer first?</td><td><span class="tag-no">NO</span> — out-of-state policy is accepted at the inspection station</td></tr>
+        <tr><td>Where to complete the title transfer</td><td>Bexar County Tax Assessor-Collector (after the inspection is on file)</td></tr>
+        <tr><td>Time limit to register after moving to Texas</td><td>30 days after establishing Texas residency</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- § 09 FAIL / REINSPECTION -->
+  <div class="law-section" id="s9">
+    <div class="section-header">
+      <span class="section-num">§ 09</span>
+      <h2 class="section-title">If You Fail — The 15-Day Free Reinspection Rule</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.407 · § 548.509(f)</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>If your vehicle fails, <strong>you pay the $18.50 fee at the time of the test</strong> — whether you pass or fail. That fee entitles you to one free reinspection at the same station within 15 days, after you have repaired the issue. If you return after 15 days, or go to a different station, you will be charged the full $18.50 fee again.</p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 548.407 — Reinspection After Failure</span>
+      <blockquote>"If a vehicle fails the inspection… the owner of the vehicle… is entitled to one reinspection at the same station within 15 days of the failed inspection without paying an additional inspection fee, provided the vehicle is repaired… and returned to the station."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>When do I pay?</td><td>At time of the initial inspection — pass or fail</td></tr>
+        <tr><td>Reinspection cost</td><td><span class="tag-val">$0</span> — free if within 15 days at the same station</td></tr>
+        <tr><td>Reinspection window</td><td><span class="tag-val">15 days</span> from the date of the failed inspection</td></tr>
+        <tr><td>Must I return to the same station?</td><td><span class="tag-yes">YES</span> — a different station will charge the full fee again</td></tr>
+        <tr><td>What if I return after 15 days?</td><td>Full $18.50 fee applies — treated as a new inspection</td></tr>
+        <tr><td>Number of free reinspections per failure</td><td>One (1)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout green">
+      <strong>Free 15-day reinspection is always honored at Shepherd Emissions.</strong> Bring your original failed inspection report when you return.
+    </div>
+  </div>
+
+  <!-- § 10 MONITORS NOT READY -->
+  <div class="law-section" id="s10">
+    <div class="section-header">
+      <span class="section-num">§ 10</span>
+      <h2 class="section-title">"Monitors Not Ready" — The Drive Cycle Rule</h2>
+      <span class="section-cite">30 Tex. Admin. Code § 114.50(f) · EPA OBD-II Readiness Monitor Standards</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>Your vehicle's computer runs a set of internal self-tests called "readiness monitors." These must be completed before the vehicle can pass an emissions test. If too many monitors are in "Not Ready" status — which commonly occurs after a battery disconnect, an ECU reset, or minimal driving after a repair — <strong>the vehicle will be marked as a failed inspection</strong>. The fix is to drive the vehicle through a mix of highway and local driving for a few days. No repair is needed — only driving time.</p>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Common causes</td><td>Battery disconnect · Recent ECU reset · Limited driving after a repair</td></tr>
+        <tr><td>Monitors allowed "Not Ready" — MY 1996–2000</td><td>Up to 2 (fail if more than 2 are incomplete)</td></tr>
+        <tr><td>Monitors allowed "Not Ready" — MY 2001 and newer</td><td>Up to 1 (fail if more than 1 is incomplete)</td></tr>
+        <tr><td>Is a mechanical repair required?</td><td><span class="tag-no">NO</span> — this is typically a data readiness issue, not a broken component</td></tr>
+        <tr><td>How to resolve</td><td>Drive the vehicle normally — mixed city and highway — for 1 to 5 days, then return</td></tr>
+        <tr><td>Do I pay the inspection fee for a "not ready" failure?</td><td><span class="tag-yes">YES</span> — "not ready" counts as a failed inspection; the 15-day reinspection rule applies</td></tr>
+      </tbody>
+    </table>
+
+    <div class="statute-box">
+      <span class="statute-label">30 Tex. Admin. Code § 114.50(f) — Readiness Monitor Standards</span>
+      <blockquote>"A vehicle shall fail the OBD inspection if… (2) for model year 1996 through 2000 vehicles, more than two… readiness monitors indicate 'not ready'… (3) for model year 2001 and later vehicles, more than one… readiness monitor indicates 'not ready'…"</blockquote>
+    </div>
+  </div>
+
+  <!-- § 11 REGISTRATION LINK -->
+  <div class="law-section" id="s11">
+    <div class="section-header">
+      <span class="section-num">§ 11</span>
+      <h2 class="section-title">How Inspection Results Link to Registration Renewal</h2>
+      <span class="section-cite">Tex. Transp. Code § 548.605 · § 502.040 · Texas DMV Single-Sticker System</span>
+    </div>
+
+    <div class="plain-box">
+      <span class="plain-label">Plain English</span>
+      <p>When your vehicle passes inspection, the results are <strong>transmitted electronically to TxDMV</strong> and linked to your vehicle record — typically within minutes. When you renew your registration online, by mail, or in person, the system automatically verifies that a current passing inspection is on file. <strong>You do not need to bring your inspection report to the DMV</strong>. Since 2015, Texas uses a single registration-only windshield sticker; there is no longer a separate inspection sticker.</p>
+    </div>
+
+    <div class="statute-box">
+      <span class="statute-label">Tex. Transp. Code § 548.605 — Electronic Transmission of Inspection Results</span>
+      <blockquote>"An inspection station shall electronically transmit to the department… the results of each vehicle inspection performed at the station… at the time the inspection is performed."</blockquote>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Item</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>Separate windshield inspection sticker</td><td><span class="tag-exempt">ELIMINATED</span> — Texas moved to a single-sticker registration system in 2015; no inspection sticker has been issued since</td></tr>
+        <tr><td>Registration sticker</td><td>Still required — one registration-only sticker on the windshield</td></tr>
+        <tr><td>How inspection links to registration</td><td>Transmitted electronically to TxDMV at time of inspection — no action required by the vehicle owner</td></tr>
+        <tr><td>Must I bring my inspection report anywhere?</td><td><span class="tag-no">NO</span> — results are filed automatically with TxDMV</td></tr>
+        <tr><td>How long is the passing inspection valid?</td><td>12 months from the date of the inspection</td></tr>
+        <tr><td>Can I renew online after passing?</td><td><span class="tag-yes">YES</span> — TxDMV.gov, typically within 24 hours of the inspection</td></tr>
+        <tr><td>Registration renewal blocked when?</td><td>When no current passing inspection is on file in TxDMV — renewal cannot proceed until a new inspection passes</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout green">
+      <strong>When you pass at Shepherd Emissions, your results are transmitted to TxDMV on the spot.</strong> Most customers can renew their registration online within a few hours.
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <div class="f-logo"><img src="logo.png?v=2" alt="Shepherd Emissions" /></div>
+    <span>© 2025 Shepherd Emissions · 108 Hawthorne St, San Antonio, TX 78214 · Bexar County</span>
+  </div>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="index.html">← Back to Site</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#info">Location &amp; Hours</a>
+  </div>
+</footer>
+
+</body>
+</html>

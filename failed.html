@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What If I Failed? — Shepherd Emissions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080F1C;
+      --bg2:       #0C1525;
+      --glass:     rgba(255,255,255,0.042);
+      --border:    rgba(255,255,255,0.09);
+      --border-hi: rgba(255,255,255,0.18);
+      --red:       #E8112D;
+      --red-dim:   rgba(232,17,45,0.14);
+      --red-glow:  rgba(232,17,45,0.35);
+      --green:     #00C85A;
+      --green-dim: rgba(0,200,90,0.12);
+      --gold:      #C8962A;
+      --white:     #FFFFFF;
+      --dim:       rgba(255,255,255,0.58);
+      --dimmer:    rgba(255,255,255,0.32);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; }
+
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.065) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(8,15,28,0.96); backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
+    .nav-logo-sm { width: 36px; height: 36px; flex-shrink: 0; }
+    .nav-logo-sm img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-wordmark { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+    .nav-back {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dimmer); text-decoration: none; border: 1px solid var(--border);
+      border-radius: 3px; padding: 0.35rem 0.85rem; transition: all 0.2s;
+    }
+    .nav-back:hover { color: var(--white); border-color: var(--border-hi); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      position: relative; z-index: 1; padding: 8rem 2.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(232,17,45,0.05) 0%, transparent 100%);
+    }
+    .page-header-inner { max-width: 860px; margin: 0 auto; }
+    .page-eyebrow {
+      font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--red); display: block; margin-bottom: 1.1rem;
+    }
+    .page-title { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; margin-bottom: 1rem; }
+    .page-sub { font-size: 0.92rem; line-height: 1.8; color: var(--dim); max-width: 620px; }
+
+    /* ── FAIL FLASH ── */
+    .fail-flash { color: var(--red); animation: failblink 0.9s ease-in-out infinite; }
+    @keyframes failblink { 0%,100%{ opacity:1; text-shadow: 0 0 18px rgba(232,17,45,0.7); } 50%{ opacity:0.25; text-shadow: none; } }
+
+    /* ── CONTENT ── */
+    .content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 4rem 2.5rem 6rem; }
+
+    .fail-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    .fail-card {
+      position: relative; background: var(--glass); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem 1.35rem; transition: border-color 0.2s;
+    }
+    .fail-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, var(--red), transparent); opacity: 0; transition: opacity 0.2s; }
+    .fail-card:hover::before { opacity: 1; }
+    .fail-card:hover { border-color: rgba(232,17,45,0.2); }
+    .fail-icon { font-size: 1.4rem; margin-bottom: 0.85rem; }
+    .fail-card-t { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 0.6rem; }
+    .fail-card-d { font-size: 0.8rem; line-height: 1.8; color: var(--dim); }
+
+    /* ── REINSPECT BANNER ── */
+    .reinspect-banner {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      background: var(--glass); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1.5rem 1.5rem; margin-bottom: 3rem;
+    }
+    .reinspect-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .reinspect-t { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+    .reinspect-d { font-size: 0.82rem; line-height: 1.8; color: var(--dim); margin-bottom: 0.5rem; }
+    .law-cite { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--dimmer); text-transform: uppercase; }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta { text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); }
+    .bottom-cta p { font-size: 0.88rem; color: var(--dim); margin-bottom: 1.5rem; }
+    .btn-primary {
+      display: inline-block; background: var(--red); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      padding: 0.9rem 2rem; border-radius: 4px; transition: all 0.2s;
+    }
+    .btn-primary:hover { box-shadow: 0 0 24px var(--red-glow); }
+    .btn-secondary {
+      display: inline-block; color: var(--white); border: 1px solid var(--border-hi);
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      padding: 0.9rem 2rem; border-radius: 4px; transition: all 0.2s; margin-left: 0.75rem;
+    }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .fail-grid { grid-template-columns: 1fr; }
+      .content { padding: 3rem 1.25rem 4rem; }
+      .page-header { padding: 6rem 1.25rem 3rem; }
+      .btn-secondary { margin-left: 0; margin-top: 0.75rem; display: block; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo-sm"><img src="shepherd-logo.png" alt="Shepherd Emissions logo" /></div>
+    <span class="nav-wordmark">Shepherd Emissions</span>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Site</a>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <span class="page-eyebrow">Straight Talk — No Sugarcoating</span>
+    <h1 class="page-title">What If I <span class="fail-flash">FAILED?</span></h1>
+    <p class="page-sub">Most vehicles pass on the first try. If yours doesn't, we tell you exactly why — and exactly what it takes to get it fixed. One fee covers it: your reinspection is free within 15 days.</p>
+  </div>
+</div>
+
+<div class="content">
+  <div class="fail-grid">
+    <div class="fail-card">
+      <div class="fail-icon">🔧</div>
+      <p class="fail-card-t">Diagnostic Code (DTC)</p>
+      <p class="fail-card-d">Your vehicle's computer flagged an emissions-related fault. This needs to be diagnosed and repaired by a mechanic before you can pass. Once fixed, come back for your free reinspection.</p>
+    </div>
+    <div class="fail-card">
+      <div class="fail-icon">⏳</div>
+      <p class="fail-card-t">Monitors Not Ready</p>
+      <p class="fail-card-d">Your vehicle's onboard systems haven't completed their self-checks — usually happens after a battery disconnect or recent repair. Drive the vehicle for a few days through normal stop-and-go cycles, then return.</p>
+    </div>
+    <div class="fail-card">
+      <div class="fail-icon">⛽</div>
+      <p class="fail-card-t">Gas Cap Test Failed</p>
+      <p class="fail-card-d">A loose or faulty gas cap causes evaporative emissions to leak. Pick up a new gas cap at any auto parts store and come back — it's one of the quickest fixes.</p>
+    </div>
+  </div>
+
+  <div class="reinspect-banner">
+    <span class="reinspect-icon">📋</span>
+    <div>
+      <p class="reinspect-t">You pay once. Reinspection is free.</p>
+      <p class="reinspect-d">You're charged for the inspection when it's performed. If your vehicle fails, you have <strong>15 days</strong> to make the necessary repairs and return for a free reinspection — no additional charge.</p>
+      <span class="law-cite">Tex. Transp. Code § 548.407 · § 548.509</span>
+    </div>
+  </div>
+
+  <div class="bottom-cta">
+    <p>Fixed your issue? Drive back in — no appointment needed.</p>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" class="btn-primary">Get Directions →</a>
+    <a href="tel:+12105550182" class="btn-secondary">(210) 555-0182</a>
+  </div>
+</div>
+
+</body>
+</html>

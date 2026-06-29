@@ -63,20 +63,58 @@
     /* ── NAV ── */
     nav {
       position: fixed; top: 34px; left: 0; right: 0; z-index: 200;
-      height: 80px; display: flex; align-items: center; justify-content: space-between;
+      height: 58px; display: flex; align-items: center; justify-content: space-between;
       padding: 0 2rem;
       background: rgba(8,15,28,0.96); backdrop-filter: blur(24px);
       border-bottom: 1px solid var(--border);
       gap: 1.5rem;
     }
+
+    /* ── INFO BAR ── */
+    .info-bar {
+      position: fixed; top: 92px; left: 0; right: 0; z-index: 199;
+      height: 52px; display: flex; align-items: stretch;
+      background: rgba(8,15,28,0.96); backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+    .info-bar-block {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      padding: 0 1.25rem; border-right: 1px solid var(--border); gap: 0.1rem;
+    }
+    .info-bar-block:last-child { border-right: none; }
+    .info-bar-label { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dimmer); }
+    .info-bar-val { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--white); white-space: nowrap; }
+    .info-bar-val.sm { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 500; }
+    .info-bar-ins {
+      flex: 1.1; display: flex; flex-direction: column; justify-content: center;
+      padding: 0 1.25rem; border-right: 1px solid var(--border);
+      background: rgba(232,17,45,0.07); gap: 0.1rem;
+    }
+    .info-bar-ins-label { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); }
+    .info-bar-ins-val {
+      font-size: 0.72rem; font-weight: 700; color: var(--white); white-space: nowrap;
+      animation: insflash 1.4s ease-in-out infinite;
+    }
+    .info-bar-tel {
+      display: flex; align-items: center; padding: 0 1.5rem;
+      font-family: 'Space Mono', monospace; font-size: 0.78rem;
+      color: var(--red); text-decoration: none; letter-spacing: 0.04em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .info-bar-tel:hover { background: var(--red-dim); }
     .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
     .nav-logo-sm { width: 44px; height: 44px; flex-shrink: 0; }
     .nav-logo-sm img { width: 100%; height: 100%; object-fit: contain; }
     .nav-wordmark { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
     .nav-right { display: flex; align-items: center; gap: 1.25rem; flex: 1; justify-content: flex-end; }
+    .mobile-nav-links { display: none; }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; }
     .nav-links a { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dimmer); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--white); }
+    .nav-link-fail { color: var(--red) !important; animation: navfail 1.2s ease-in-out infinite; }
+    @keyframes navfail { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+    .nav-link-law { color: #4A90D9 !important; font-weight: 600 !important; }
+    .nav-link-law:hover { color: #6BAEE8 !important; }
 
     /* nav info box: hours + insurance warning + address */
     .nav-info {
@@ -122,7 +160,7 @@
     .hero {
       position: relative; z-index: 1; min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 11rem 2.5rem 5rem; text-align: center;
+      padding: 13rem 2.5rem 5rem; text-align: center;
     }
     .hero-logo-ring {
       position: relative; margin-bottom: 3rem;
@@ -161,10 +199,40 @@
     .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
     .badge-text { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); }
-    h1 { font-size: clamp(2.6rem, 5.5vw, 4.5rem); font-weight: 700; line-height: 1.03; letter-spacing: -0.025em; margin-bottom: 1.1rem; }
+    h1 { font-size: clamp(2.6rem, 5.5vw, 4.5rem); font-weight: 700; line-height: 1.03; letter-spacing: -0.025em; }
     h1 .red { color: var(--red); }
+    .hero-h-wrap {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.1rem;
+    }
+    .hero-price-badge {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(0,200,90,0.07); border: 1px solid rgba(0,200,90,0.3);
+      border-radius: 10px; padding: 0.85rem 1.3rem; flex-shrink: 0;
+    }
+    .hero-price-num {
+      font-family: 'Space Mono', monospace; font-size: 1.9rem; font-weight: 700;
+      color: var(--green); line-height: 1;
+      animation: greenblink 1.8s ease-in-out infinite;
+      text-shadow: 0 0 20px rgba(0,200,90,0.5);
+    }
+    @keyframes greenblink {
+      0%,100% { opacity: 1; text-shadow: 0 0 22px rgba(0,200,90,0.6); }
+      50% { opacity: 0.45; text-shadow: none; }
+    }
+    .hero-price-label {
+      font-size: 0.52rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--dimmer); margin-top: 0.3rem;
+    }
     .hero-sub { font-size: 0.95rem; font-weight: 300; line-height: 1.85; color: var(--dim); max-width: 440px; margin: 0 auto 0.5rem; }
     .hero-footnote { font-size: 0.62rem; color: var(--dimmer); max-width: 440px; margin: 0 auto 2.25rem; line-height: 1.5; }
+    .drivethrough-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(200,150,42,0.12); border: 1px solid rgba(200,150,42,0.4);
+      color: #F0B429; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.35rem 1rem; margin-bottom: 1rem;
+    }
     .hero-actions { display: flex; gap: 0.85rem; justify-content: center; }
     .btn-primary {
       display: inline-block; background: var(--red); color: var(--white);
@@ -252,6 +320,17 @@
     /* easter egg inside alert */
     .ins-alert-egg { position: absolute; right: 0.6rem; bottom: 0.3rem; font-size: 0.65rem; opacity: 0.05; transition: all 0.3s; cursor: default; }
     .ins-alert-egg:hover { opacity: 1; transform: scale(1.6) rotate(-10deg); }
+    .ins-outofstate {
+      margin-top: 1rem; padding: 1rem 1.15rem;
+      background: rgba(200,150,42,0.06); border: 1px solid rgba(200,150,42,0.25);
+      border-radius: 5px; font-size: 0.82rem; line-height: 1.75; color: var(--dim);
+    }
+    .ins-outofstate strong { color: var(--white); font-weight: 500; }
+    .ins-outofstate-title { font-size: 0.78rem; font-weight: 700; color: #F0B429; margin-bottom: 0.5rem; }
+    .ins-mins { list-style: none; margin: 0.6rem 0; display: flex; flex-direction: column; gap: 0.3rem; }
+    .ins-mins li { display: flex; align-items: baseline; gap: 0.5rem; }
+    .ins-mins li span { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: #F0B429; font-weight: 700; min-width: 90px; }
+    .ins-outofstate-note { font-size: 0.7rem; color: var(--dimmer); margin-top: 0.6rem; line-height: 1.6; }
     .ins-cards { display: flex; flex-direction: column; gap: 0.6rem; }
     .ins-card {
       background: var(--glass); border: 1px solid var(--border); border-radius: 5px;
@@ -457,22 +536,28 @@
     .egg:hover { opacity: 1; transform: scale(1.4); }
 
     /* ── RESPONSIVE ── */
+    /* ── TABLET (≤860px) ── */
     @media (max-width: 860px) {
       .dir-addr { display: none; }
       .dir-sep { display: none; }
-      nav { padding: 0; height: auto; flex-direction: column; align-items: stretch; gap: 0; }
-      .nav-brand { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 1rem; }
-      .nav-tel { margin-left: 0; font-size: 0.68rem; padding: 0.3rem 0.6rem; }
-      .nav-right { width: 100%; flex-direction: row; align-items: stretch; gap: 0; padding-bottom: 0; }
-      .nav-links { display: none; }
-      .nav-info { width: 100%; border-radius: 0; border-top: 1px solid var(--border); border-left: none; border-right: none; border-bottom: none; flex: 1; }
-      .nav-info-block { padding: 0.35rem 0.6rem; flex: 1; }
-      .nav-info-val { font-size: 0.62rem; }
-      .nav-info-val.small { font-size: 0.6rem; }
-      .nav-ins-val { font-size: 0.62rem; }
-      .nav-wordmark { font-size: 0.7rem; }
-      .nav-logo-sm { width: 32px; height: 32px; }
-      .hero { padding: 11rem 1.25rem 3.5rem; justify-content: flex-start; }
+
+      /* Nav: tighten, keep links visible on tablet */
+      nav { padding: 0 1.25rem; height: 56px; }
+      .info-bar { top: calc(34px + 56px); }
+      .nav-wordmark { font-size: 0.72rem; }
+      .nav-logo-sm { width: 34px; height: 34px; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.62rem; }
+
+      /* Info bar: hide address on tablet, tighten */
+      .info-bar { height: 44px; }
+      .info-bar-block:nth-child(2) { display: none; } /* hide address */
+      .info-bar-val { font-size: 0.62rem; }
+      .info-bar-ins-val { font-size: 0.66rem; }
+      .info-bar-tel { font-size: 0.7rem; padding: 0 1rem; }
+
+      /* Content sections */
+      .hero { padding: 10rem 1.25rem 3.5rem; }
       .ins-inner, .info-inner { grid-template-columns: 1fr; gap: 2rem; }
       .stats-inner { grid-template-columns: 1fr 1fr; }
       .stat { border-bottom: 1px solid var(--border); padding: 1.4rem 0; }
@@ -496,30 +581,111 @@
       .hero-logo-ring::after { width: 230px; height: 230px; }
     }
 
-    @media (max-width: 480px) {
-      nav { padding: 0 1rem; }
-      .nav-wordmark { display: none; }
-      .nav-tel { font-size: 0.72rem; padding: 0.45rem 0.75rem; }
+    /* ── MOBILE (≤600px) ── */
+    @media (max-width: 600px) {
+      /* Top dir bar */
+      .dir-bar { font-size: 0.58rem; padding: 0 1rem; justify-content: center; gap: 0.75rem; }
+
+      /* Nav: logo + wordmark, links hidden (shown in mobile-nav-links bar) */
+      nav { padding: 0 1rem; height: 52px; }
+      .nav-links { display: none; }
+      /* info-bar: below dir bar (34) + nav (52) */
+      .info-bar { top: calc(34px + 52px); }
+      /* mobile nav links: below info-bar */
+      .mobile-nav-links { top: calc(34px + 52px + 44px); }
+      .nav-wordmark { font-size: 0.68rem; }
+      .nav-logo-sm { width: 30px; height: 30px; }
+
+      /* Info bar: 3 blocks — Hours | ⚠ Insurance | Phone */
+      .info-bar { height: auto; min-height: 44px; flex-wrap: nowrap; }
+      .info-bar-block:nth-child(2) { display: none; } /* hide address */
+      .info-bar-block { padding: 0.4rem 0.75rem; }
+      .info-bar-val { font-size: 0.58rem; white-space: normal; line-height: 1.3; }
+      .info-bar-ins-val { font-size: 0.6rem; }
+      .info-bar-ins-label { font-size: 0.46rem; }
+      .info-bar-label { font-size: 0.46rem; }
+      .info-bar-tel { font-size: 0.66rem; padding: 0 0.85rem; letter-spacing: 0; }
+
+      /* Mobile nav links row below info bar */
+      .mobile-nav-links {
+        display: flex; background: rgba(8,15,28,0.98); border-bottom: 1px solid var(--border);
+        position: fixed; top: calc(34px + 52px + 44px); left: 0; right: 0; z-index: 198;
+      }
+      .mobile-nav-links a {
+        flex: 1; text-align: center; padding: 0.55rem 0.25rem;
+        font-size: 0.56rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+        color: var(--dimmer); text-decoration: none; border-right: 1px solid var(--border);
+        transition: color 0.2s;
+      }
+      .mobile-nav-links a:last-child { border-right: none; }
+      .mobile-nav-links a:hover { color: var(--white); }
+
+      /* Hero: account for dir(34) + nav(52) + info-bar(44) + mobile-nav(30) = 160px + breathing room */
       .hero { padding: 12rem 1rem 3rem; justify-content: flex-start; }
-      h1 { font-size: 2.2rem; }
-      .hero-sub { font-size: 0.9rem; }
-      .btn-primary, .btn-secondary { padding: 0.9rem 1.4rem; font-size: 0.78rem; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; }
+      .hero-logo-circle { width: 180px; height: 180px; }
+      .hero-logo-ring::before { width: 176px; height: 176px; }
+      .hero-logo-ring::after { width: 190px; height: 190px; }
+      .hero-logo-ring { margin-bottom: 2rem; }
+
+      /* Price badge: full width below headline */
+      .hero-h-wrap { flex-direction: column; gap: 1rem; }
+      .hero-price-badge { width: 100%; max-width: 220px; padding: 0.75rem 1rem; }
+      .hero-price-num { font-size: 1.6rem; }
+
+      /* Hero text + CTAs */
+      h1 { font-size: 2.1rem; }
+      .hero-sub { font-size: 0.88rem; }
       .hero-actions { flex-direction: column; align-items: center; width: 100%; gap: 0.65rem; }
-      .btn-primary, .btn-secondary { width: 100%; max-width: 280px; }
-      .law-strip { padding: 1rem 1.1rem; }
-      .stat-n { font-size: 1.2rem; }
-      .ins-inner { gap: 2rem; }
-      .sec-h { font-size: 1.5rem; }
-      .scan-meta { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-      .scan-result { font-size: 2.2rem; }
-      .info-tel { font-size: 1rem; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 300px; padding: 0.95rem 1.25rem; font-size: 0.8rem; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+
+      /* Law strip */
+      .law-strip { padding: 1rem 1rem; }
+
+      /* Stats */
+      .stat-n { font-size: 1.15rem; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+
+      /* Sections */
       .insurance, .services, .how, .info, .fail-section { padding: 3rem 1rem; }
       .scan-wrap { padding: 0 1rem 3rem; }
+      .ins-inner { gap: 1.5rem; }
+      .sec-h { font-size: 1.45rem; }
+
+      /* Scan result */
+      .scan-meta { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .scan-result { font-size: 2rem; }
+
+      /* Info section */
+      .info-tel { font-size: 1rem; }
+
+      /* Fail section */
       .fail-grid { gap: 0.85rem; }
-      .fail-card { padding: 1.25rem 1.1rem; }
+      .fail-card { padding: 1.25rem 1rem; }
+
+      /* Reviews */
+      .review-card { flex: 0 0 88vw; }
+
+      /* Bottom CTA */
+      .bottom-cta-btns { flex-direction: column; align-items: center; }
+      .bottom-cta-btns a { width: 100%; max-width: 300px; text-align: center; }
+
+      /* Bottom bar */
+      .bottom-bar { flex-direction: column; align-items: center; text-align: center; padding: 1rem; gap: 0.5rem; }
+      .bb { font-size: 0.56rem; }
+
+      /* Footer */
       footer { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.25rem 1rem; }
-      .bottom-bar { padding: 0.75rem 1rem; }
-      .bb { font-size: 0.55rem; }
+    }
+
+    /* ── SMALL PHONE (≤375px) ── */
+    @media (max-width: 375px) {
+      h1 { font-size: 1.85rem; }
+      .hero { padding: 15rem 0.85rem 2.5rem; }
+      .hero-price-num { font-size: 1.4rem; }
+      .sec-h { font-size: 1.3rem; }
+      .stat-n { font-size: 1rem; }
+      .info-bar-val { font-size: 0.52rem; }
+      .info-bar-tel { font-size: 0.6rem; padding: 0 0.6rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -564,26 +730,36 @@
     <ul class="nav-links">
       <li><a href="#insurance">Insurance</a></li>
       <li><a href="#services">Services</a></li>
+      <li><a href="#failed" class="nav-link-fail">If I Failed</a></li>
+      <li><a href="texas-law.html" class="nav-link-law">Texas Law</a></li>
     </ul>
-    <div class="nav-info">
-      <div class="nav-info-block">
-        <span class="nav-info-label">Hours</span>
-        <span class="nav-info-val">Mon–Fri 8–5:30</span>
-        <span class="nav-info-val">Sat 8–4</span>
-      </div>
-      <a class="nav-info-block" href="https://www.google.com/maps/search/?api=1&query=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" style="text-decoration:none;">
-        <span class="nav-info-label">Address</span>
-        <span class="nav-info-val small">108 Hawthorne St</span>
-        <span class="nav-info-val small">San Antonio, TX</span>
-      </a>
-      <div class="nav-info-block nav-insurance">
-        <span class="nav-ins-label">⚠ Required</span>
-        <span class="nav-ins-val">Bring Insurance!</span>
-      </div>
-    </div>
-    <a href="tel:+12105550182" class="nav-tel">(210) 555-0182</a>
   </div>
 </nav>
+
+<!-- INFO BAR -->
+<div class="info-bar">
+  <div class="info-bar-block">
+    <span class="info-bar-label">Hours</span>
+    <span class="info-bar-val">Mon–Fri 8–5:30 &nbsp;·&nbsp; Sat 8–4</span>
+  </div>
+  <a class="info-bar-block" href="https://www.google.com/maps/search/?api=1&query=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" style="text-decoration:none;">
+    <span class="info-bar-label">Address</span>
+    <span class="info-bar-val sm">108 Hawthorne St, San Antonio, TX 78214</span>
+  </a>
+  <div class="info-bar-ins">
+    <span class="info-bar-ins-label">⚠ Required to Pass</span>
+    <span class="info-bar-ins-val">Bring Your Insurance Card</span>
+  </div>
+  <a href="tel:+12105550182" class="info-bar-tel">(210) 555-0182</a>
+</div>
+
+<!-- MOBILE NAV LINKS (hidden on desktop via CSS) -->
+<div class="mobile-nav-links">
+  <a href="#insurance">Insurance</a>
+  <a href="#services">Services</a>
+  <a href="#failed" class="nav-link-fail">If I Failed</a>
+  <a href="texas-law.html" class="nav-link-law">TX Law</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -593,17 +769,24 @@
     </div>
   </div>
   <div class="hero-badge"><div class="badge-dot"></div><span class="badge-text">Now Open · 108 Hawthorne St, San Antonio</span></div>
-  <h1>San Antonio's Most Efficient,<br><span class="red">No Upcharge</span> Station.</h1>
-  <p class="hero-sub">Walk in. Get cleared. Drive away. No appointments, no wait rooms, no nonsense — just the fastest emissions inspection in the city. Done in under 5 minutes.*</p>
-  <p class="hero-footnote">* Average inspection time when no queue is present and equipment is functioning normally.</p>
-  <div class="hero-actions">
-    <a href="#info" class="btn-primary">Get Directions</a>
-    <a href="#services" class="btn-secondary">View Services</a>
+  <div class="drivethrough-badge">🚗 Drive-Through Only — Stay In Your Car</div>
+  <div class="hero-h-wrap">
+    <h1>San Antonio's Most<br>Efficient Station.</h1>
+    <div class="hero-price-badge">
+      <span class="hero-price-num">$18.50</span>
+      <span class="hero-price-label">Flat State Fee</span>
+    </div>
   </div>
+  <p class="hero-sub">Pull up, stay in your car, drive away done. No appointments. No upsells. No surprises. Just the fastest emissions inspection in Bexar County — out the door in under 5 minutes.*</p>
+  <div class="hero-actions">
+    <a href="https://www.google.com/maps/dir/?api=1&destination=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" class="btn-primary">Get Directions →</a>
+    <a href="tel:+12105550182" class="btn-secondary">Call Us Now</a>
+  </div>
+  <p style="font-size:0.68rem;color:var(--dimmer);max-width:500px;line-height:1.7;margin-top:1.25rem;text-align:center;">* Inspection time varies by vehicle year, make, model, and onboard diagnostic system. Under 5 minutes reflects typical completion time under normal conditions with no queue. As a licensed Texas emissions station, all inspections are performed in full compliance with TCEQ and TxDMV requirements regardless of duration.</p>
   <div class="law-strip">
-    <span class="law-strip-label">Texas Law — Required Annually</span>
-    <p><strong>Bexar County requires an annual emissions inspection</strong> for all registered vehicles before registration renewal. Under Texas Transportation Code § 548.301, failing to pass means your registration cannot be renewed with TxDMV.</p>
-    <span class="law-cite">Tex. Transp. Code § 548.301 · Tex. Health &amp; Safety Code § 382</span>
+    <span class="law-strip-label">Texas State Law — Who Needs an Emissions Test?</span>
+    <p><strong>Under Texas law, only gasoline-powered vehicles aged 2 to 24 years old</strong> registered in a designated emissions county (like Bexar County) are required to pass an annual emissions test. <strong>Brand new vehicles are exempt for their first 2 years.</strong> Vehicles 25 years old or older are <strong>completely exempt</strong> from emissions testing. If your vehicle falls in the 2–24 year range and is registered here, you must pass every year — no exceptions.</p>
+    <span class="law-cite">Tex. Transp. Code § 548.301 · Tex. Health &amp; Safety Code § 382 · <a href="texas-law.html" style="color:inherit;text-decoration:underline;text-underline-offset:2px;opacity:0.8;">View full Texas law reference →</a></span>
     <!-- EASTER EGG: GSD hiding in legalese -->
     <span class="law-egg" title="even the law can't stop a good dog 🐕">🐕‍🦺</span>
   </div>
@@ -639,11 +822,11 @@
 <!-- STATS -->
 <div class="stats">
   <div class="stats-inner">
-    <div class="stat"><p class="stat-n">Walk-In</p><p class="stat-l">Zero appointments. Ever.</p></div>
+    <div class="stat"><p class="stat-n">$18.50</p><p class="stat-l">Flat. State-mandated. Always.</p></div>
     <div class="stat"><p class="stat-n">~5 min</p><p class="stat-l">Fastest in San Antonio</p></div>
-    <div class="stat"><p class="stat-n">Mon–Sat</p><p class="stat-l">Six days a week</p></div>
+    <div class="stat"><p class="stat-n">Drive-Thru</p><p class="stat-l">Stay in your vehicle</p></div>
     <div class="stat" style="position:relative;">
-      <p class="stat-n">Bexar Co.</p><p class="stat-l">Serving all San Antonio</p>
+      <p class="stat-n">Mon–Sat</p><p class="stat-l">Open six days a week</p>
       <!-- EASTER EGG: tiny boston hiding in stats -->
       <span class="egg" style="position:absolute;bottom:0.5rem;right:0.75rem;font-size:0.65rem;" title="bexar county's finest 🐶">🐶</span>
     </div>
@@ -660,6 +843,17 @@
       <div class="ins-alert">
         ✓ &nbsp;A phone photo, screenshot, or insurance app is all we need. No printed card required.
         <span class="ins-alert-egg" title="insured and adorable 🐶">🐶</span>
+      </div>
+      <div class="ins-outofstate">
+        <p class="ins-outofstate-title">🌎 Out-of-State Insurance Accepted</p>
+        <p>If you're transferring your title to Texas or getting TX plates, your out-of-state insurance is perfectly fine to use — <strong>as long as it meets Texas minimum liability requirements:</strong></p>
+        <ul class="ins-mins">
+          <li><span>$30,000</span> bodily injury per person</li>
+          <li><span>$60,000</span> bodily injury per accident</li>
+          <li><span>$25,000</span> property damage per accident</li>
+        </ul>
+        <p class="ins-outofstate-note">Most standard U.S. policies meet or exceed these limits — check your declarations page or call your insurer if unsure.</p>
+        <span class="law-cite">Tex. Transp. Code § 601.072 · Tex. Ins. Code § 1952.001</span>
       </div>
     </div>
     <div class="ins-cards">
@@ -678,77 +872,31 @@
 <section class="services" id="services">
   <div class="svc-inner">
     <span class="sec-eyebrow">What We Do</span>
-    <h2 class="sec-h">Emissions Inspection</h2>
+    <h2 class="sec-h">One Service. Done Right.<br>Every Time.</h2>
     <div class="svc-grid">
       <div class="svc">
         <span class="svc-egg" title="fast like a GSD 🐕‍🦺">🐕‍🦺</span>
         <p class="svc-n">OBD-II Emissions Test</p>
         <p class="svc-d">We connect to your vehicle's diagnostic port and run the full state-required emissions scan. Results printed on the spot and filed electronically with TxDMV. In and out in 5 minutes.</p>
+        <span class="law-cite">Tex. Transp. Code § 548.301 · 30 Tex. Admin. Code § 114.50</span>
       </div>
       <div class="svc" style="position:relative;">
         <span class="svc-egg" title="boston approved 🐶">🐶</span>
         <p class="svc-n">Out-of-State Transfer</p>
         <p class="svc-d">Getting a Texas title or switching to Texas plates? An emissions test is required. All you need to bring is proof of insurance that meets Texas minimum liability requirements.</p>
+        <span class="law-cite">Tex. Transp. Code § 501.0234 · § 548.301</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SCAN CARD -->
-<div class="scan-wrap">
-  <div class="scan-card">
-    <span class="scan-egg" title="scan complete. good boy detected 🐕">🐕‍🦺</span>
-    <p class="scan-lbl">// OBD-II Diagnostic System · Shepherd Emissions</p>
-    <div class="scan-bar-wrap"><div class="scan-bar"></div></div>
-    <p class="scan-status">All emissions monitors verified...</p>
-    <div class="scan-result">PASS ✓</div>
-    <div class="scan-meta">
-      <div><p class="scan-fl">County</p><p class="scan-fv">Bexar, TX</p></div>
-      <div><p class="scan-fl">Valid</p><p class="scan-fv">12 months</p></div>
-      <div><p class="scan-fl">Station</p><p class="scan-fv">Shepherd</p></div>
-      <div><p class="scan-fl">Time</p><p class="scan-fv">~5 min</p></div>
-    </div>
-  </div>
-</div>
 
-<!-- IF YOU DON'T PASS -->
-<section class="fail-section">
-  <div class="fail-inner">
-    <span class="sec-eyebrow">If Your Vehicle Doesn't Pass</span>
-    <h2 class="sec-h">What Happens If You <span class="fail-flash">FAIL</span></h2>
-    <p class="fail-intro">Most vehicles pass on the first try. But if yours doesn't, here's exactly what it means — and what to do next.</p>
-    <div class="fail-grid">
-      <div class="fail-card">
-        <div class="fail-icon">🔧</div>
-        <p class="fail-card-t">Diagnostic Code (DTC)</p>
-        <p class="fail-card-d">Your vehicle's computer flagged an emissions-related fault. This needs to be diagnosed and repaired by a mechanic before you can pass. Once fixed, come back for your free reinspection.</p>
-      </div>
-      <div class="fail-card">
-        <div class="fail-icon">⏳</div>
-        <p class="fail-card-t">Monitors Not Ready</p>
-        <p class="fail-card-d">Your vehicle's onboard systems haven't completed their self-checks — usually happens after a battery disconnect or recent repair. Drive the vehicle for a few days through normal stop-and-go cycles, then return.</p>
-      </div>
-      <div class="fail-card">
-        <div class="fail-icon">⛽</div>
-        <p class="fail-card-t">Gas Cap Test Failed</p>
-        <p class="fail-card-d">A loose or faulty gas cap causes evaporative emissions to leak. Pick up a new gas cap at any auto parts store and come back — it's one of the quickest fixes.</p>
-      </div>
-    </div>
-    <div class="reinspect-banner">
-      <span class="reinspect-icon">📋</span>
-      <div>
-        <p class="reinspect-t">You pay once. Reinspection is free.</p>
-        <p class="reinspect-d">You're charged for the inspection when it's performed. If your vehicle fails, you have <strong>15 days</strong> to make the necessary repairs and return for a free reinspection — no additional charge.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- HOW IT WORKS -->
 <section class="how">
   <div class="how-inner">
-    <span class="sec-eyebrow">Process</span>
-    <h2 class="sec-h">How It Works</h2>
+    <span class="sec-eyebrow">No Appointment Needed</span>
+    <h2 class="sec-h">Pull In. Pass. Drive Away.</h2>
     <div class="steps">
       <div class="step">
         <span class="step-num">// 01</span>
@@ -776,8 +924,8 @@
 <!-- REVIEWS -->
 <section class="reviews-section">
   <div class="reviews-inner">
-    <span class="sec-eyebrow">Customer Reviews</span>
-    <h2 class="sec-h">What San Antonio Is Saying</h2>
+    <span class="sec-eyebrow">4.8 Stars · Google Reviews</span>
+    <h2 class="sec-h">San Antonio Keeps Coming Back</h2>
     <div class="reviews-grid">
       <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"I was so confused about the new San Antonio emissions rules, but Shepherd made it incredibly easy. In and out in less than 15 minutes, and they stuck right to the state-mandated $18.50. No trying to upsell me on windshield wipers or random repairs. Highly recommend!"</p><div class="review-author"><span class="review-name">Marcus T.</span><span class="review-source">Google</span></div></div>
       <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-text">"Fastest testing in SA. I was worried about long lines with everyone trying to get inspected at the same time, but Shepherd Emissions has their system down. Paid my $18.50 and was on my way to renew my registration. Will be back next year."</p><div class="review-author"><span class="review-name">Elena R.</span><span class="review-source">Google</span></div></div>
@@ -866,6 +1014,52 @@
       </ul>
     </div>
   </div>
+</section>
+
+<!-- IF YOU DON'T PASS -->
+<section class="fail-section" id="failed">
+  <div class="fail-inner">
+    <span class="sec-eyebrow">Straight Talk — No Sugarcoating</span>
+    <h2 class="sec-h">What If I <span class="fail-flash">FAILED?</span></h2>
+    <p class="fail-intro">Most vehicles pass on the first try. If yours doesn't, we tell you exactly why — and exactly what it takes to get it fixed. One fee covers it: your reinspection is free within 15 days.</p>
+    <div class="fail-grid">
+      <div class="fail-card">
+        <div class="fail-icon">🔧</div>
+        <p class="fail-card-t">Diagnostic Code (DTC)</p>
+        <p class="fail-card-d">Your vehicle's computer flagged an emissions-related fault. This needs to be diagnosed and repaired by a mechanic before you can pass. Once fixed, come back for your free reinspection.</p>
+      </div>
+      <div class="fail-card">
+        <div class="fail-icon">⏳</div>
+        <p class="fail-card-t">Monitors Not Ready</p>
+        <p class="fail-card-d">Your vehicle's onboard systems haven't completed their self-checks — usually happens after a battery disconnect or recent repair. Drive the vehicle for a few days through normal stop-and-go cycles, then return.</p>
+      </div>
+      <div class="fail-card">
+        <div class="fail-icon">⛽</div>
+        <p class="fail-card-t">Gas Cap Test Failed</p>
+        <p class="fail-card-d">A loose or faulty gas cap causes evaporative emissions to leak. Pick up a new gas cap at any auto parts store and come back — it's one of the quickest fixes.</p>
+      </div>
+    </div>
+    <div class="reinspect-banner">
+      <span class="reinspect-icon">📋</span>
+      <div>
+        <p class="reinspect-t">You pay once. Reinspection is free.</p>
+        <p class="reinspect-d">You're charged for the inspection when it's performed. If your vehicle fails, you have <strong>15 days</strong> to make the necessary repairs and return for a free reinspection — no additional charge.</p>
+        <span class="law-cite">Tex. Transp. Code § 548.407 · § 548.509</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section style="position:relative;z-index:1;padding:5rem 2.5rem;border-top:1px solid var(--border);text-align:center;background:linear-gradient(180deg,rgba(232,17,45,0.04) 0%,transparent 100%);">
+  <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:1rem;">No Appointment. No Waiting Room. No Upsells.</p>
+  <h2 style="font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;letter-spacing:-0.025em;line-height:1.05;margin-bottom:0.75rem;">Ready to get it done?</h2>
+  <p style="font-size:0.92rem;color:var(--dim);margin-bottom:2rem;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.7;">Drive up any time we're open — Monday through Saturday. Bring your insurance and your car. We'll handle the rest in under 5 minutes.</p>
+  <div class="bottom-cta-btns" style="display:flex;gap:0.85rem;justify-content:center;flex-wrap:wrap;">
+    <a href="https://www.google.com/maps/dir/?api=1&destination=108+Hawthorne+St+San+Antonio+TX+78214" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.82rem;padding:0.9rem 2.2rem;">Get Directions →</a>
+    <a href="tel:+12105550182" class="btn-secondary" style="font-size:0.82rem;padding:0.9rem 2.2rem;">(210) 555-0182</a>
+  </div>
+  <p style="margin-top:1.5rem;font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--dimmer);letter-spacing:0.1em;">108 Hawthorne St · San Antonio, TX 78214 · Mon–Fri 8–5:30 · Sat 8–4</p>
 </section>
 
 <!-- BOTTOM BAR -->
